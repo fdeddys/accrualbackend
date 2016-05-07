@@ -1,0 +1,164 @@
+
+<ul class="nav nav-tabs">
+  <li role="presentation" ><a href="#/masterDirektorat">Direktorat</a></li>
+  <li role="presentation"  class="active"><a> Bagian</a></li>  
+</ul>
+<div growl></div> 
+<div class='container-fluid' uib-collapse="tutupGrid"  style="background-color:white"  >
+<br>
+	<div>
+		Cari Nama  : <input id='idCari' type='text' ng-model='searchNama' ng-change='getAll()' >
+		Cari kode  : <input id='idCari' type='text' ng-model='searchKode' ng-change='getAll()' >
+		
+		<input type='button' 				
+				class='btn btn-primary btn-sm'
+				ng-click='tambahBagian()'				
+				value="  Add New " 
+				style='width:15em; height:3em'				
+				/>
+	</div>
+	<br>
+	<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF"  >
+		<thead>
+			<tr>
+				<td width="5%" align="center"> <button class="btn btn-block btn-default" >Kode</button></td>	
+				<td width="15%" align="center"> <button class="btn btn-block btn-default">Nama</button></td>			    				
+			    <td width="5%"><button class="btn btn-block btn-default" ng-click='urut("kode")'>Kode</button></td> 			    			    
+			    <td width="20%" align="center"><button class="btn btn-block btn-default" ng-click='urut("nama")'>nama</button> </td>
+			    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("status")'>status</button> </td>
+			    <td width="15%" colspan="2"></td>
+			    <!-- <td width="10%"></td> -->
+			</tr>	
+		</thead>
+		<tbody>
+			<tr ng-repeat='bagian in bagians  ' >
+				<td>{{bagian.direktorat.kode}}</td>
+				<td>{{bagian.direktorat.nama}}</td>				
+			    <td>{{bagian.kode}}</td> 
+			    <td>{{bagian.nama}}</td>	
+			    <td>{{bagian.status}}</td>				    						   
+			    <td><button type='button' class='btn btn-warning btn-block btn-sm'
+			    	ng-click='ubahBagian(bagian.id, $index)'
+			    	><span> Edit </span></button></td>
+			    <td><button type='button' class='btn btn-danger btn-block btn-sm'
+			    	ng-click='hapusBagian(bagian.id,bagian.nama)'
+			    	>Delete</button></td>		    
+			</tr>		
+		</tbody>
+	</table>
+	<div class="row">
+        <uib-pagination total-items="totalItems" items-per-page="itemsPerPage" 
+         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></uib-pagination>
+    </div>
+</div>
+
+<div uib-collapse="!tutupGrid" ng-class='classForm' class='container-fluid' style='color:whitesmoke'  >
+	<div>
+		<h3 >Detil</h3>		
+		<hr>
+		<form class="form-horizontal">
+		    
+		    <div class="form-group form-group-sm">
+		        <label for="id" class="col-sm-2 control-label">ID</label>
+		        <div class="col-sm-2">
+		        	<input type='text' class="form-control " ng-disabled='true' id="id" ng-model='bagian.id' />              
+		        </div>
+		    </div>
+
+		    <div class="form-group form-group-sm">
+		        <label for="kode" class="col-sm-2 control-label">Kode</label>
+		        <div class="col-sm-2">
+		        	<input type='text' class="form-control" id="kode" ng-model='bagian.kode' />              
+		        </div>
+		    </div>
+
+		    <div class="form-group form-group-sm">
+		        <label for="nama" class="col-sm-2 control-label">Nama</label>
+		        <div class="col-sm-6	">
+		        	<input type='text' class="form-control " id="nama" ng-model='bagian.nama' maxlength='100' size="50"/>              
+		        </div>
+		    </div>
+
+		    <div class="form-group form-group-sm">
+		        <label for="nama" class="col-sm-2 control-label">Direktorat</label>
+		        <div class="col-sm-5	">
+		        	<input type='text'  ng-model='bagian.direktorat' size="100"  uib-typeahead="direktorat as direktorat.nama  for direktorat in direktorats | filter:$viewValue | limitTo:8" placeholder="ketik nama Direktorat" class="form-control "/>               
+		        </div>
+		    </div>
+
+		     <div class="form-group form-group-sm">
+		        <label for="status" class="col-sm-2 control-label">Status</label>
+		        <div class="col-sm-2 ">
+		        	<select ng-model="bagian.status" ng-options="statusBagian as statusBagian for statusBagian in statusBagians" class="form-control " id='status'></select>           
+		        </div>
+		    </div>
+
+
+		</form>
+		<!-- <table id="tableFormEdit">
+			<thead>
+				<tr width='10%'></tr>	
+				<tr width='10%'></tr>	
+				<tr width='60%'></tr>	
+				
+			</thead>			
+			<tbody>
+				<tr>
+					<td >Id</td>
+					<td >:</td>
+					<td ><input type='text' ng-disabled='true' ng-model='bagian.id' /> </td>
+				</tr>				
+			     <tr>
+					<td>kode</td>
+					<td>:</td>
+					<td ><input type='text'  ng-model='bagian.kode' size="50"  /> </td>
+				</tr>	
+				
+				<tr>
+					<td>Nama</td>
+					<td>:</td>
+					<td><input type='text' maxlength='100' ng-model='bagian.nama' size="50"  /> </td>
+				</tr>
+				<tr>
+					<td>Group</td>
+					<td>:</td>
+					<td><input type='text'  ng-model='bagian.direktorat' size="100"  typeahead="direktorat as direktorat.nama  for direktorat in direktorats | filter:$viewValue | limitTo:8" placeholder="ketik nama Direktorat" /> 	
+					</td>				
+				</tr>
+				tr>
+					<td>Status</td>
+					<td>:</td>
+					<td>						
+						<select ng-model="bagian.status" ng-options="statusBagian as statusBagian for statusBagian in statusBagians" ></select>
+					</td>
+				</tr>										
+			</tbody>
+		</table> -->
+		<br>		
+
+		<table border='0' >
+			<thead>
+				<tr >
+					<td width='8%'></td>
+					<td width='1%'></td>
+					<td width='8%'></td>
+					<td width='20%'></td>
+					<td width='20%'></td>
+				</tr>	
+			</thead>			
+			<tbody>
+				<tr>
+					<td><button class="btn btn-warning btn-block" ng-click='proses()'>Ok</button></td>
+					<td></td>					
+					<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close</button></td>
+					<td></td>					
+					<td></td>					
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+
+	<hr>	
+
+</div>

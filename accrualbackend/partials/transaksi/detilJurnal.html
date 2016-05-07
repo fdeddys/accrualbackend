@@ -1,0 +1,241 @@
+<div growl></div> 
+<ul class="nav nav-tabs">
+  <li role="presentation" ><a href="#/transaksiJurnalHeader">Jurnal Header</a></li>
+  <li role="presentation"class="active" ><a href="#/transaksiJurnalDetil/new"> Jurnal Detil</a></li>  
+</ul>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h2 class="modal-title" style="color:SteelBlue">Konfirmasi !</h2>
+    </div>
+    <div class="modal-body" style="background-color:red; ">
+        <p ><h4 style="color:white">Anda  akan menghapus [ {{kode}} ] ??? </h4></p>
+    </div>
+    <div class="modal-footer">
+		<button class="btn btn-danger btn-block" ng-click="ok()">OK</button>
+		<button class="btn btn-warning btn-block" ng-click="cancel()">Cancel</button>        
+    </div>
+</script>
+
+<div class='container' style="background-color:white" >	
+	<br>
+		<div  class='container-fluid'  >		
+			<button class="btn btn-primary " ng-disabled="!kondisiView || approved" style="width:125px" ng-click='transaksiBaru()'>Transaksi Baru</button>			
+			<button class="btn btn-warning " ng-disabled="kondisiView || approved" style="width:125px" ng-click='batal()'>Simpan</button>
+			<button class="btn btn-success " ng-disabled="!kondisiView || approved" style="width:125px" ng-click='approvedVoucher()'>Approve</button>
+			<button class="btn btn-danger" ng-disabled="!kondisiView || approved"style="width:125px" ng-click=''>Batal Approve</button>
+			<button class="btn btn-default  " style="width:125px" ng-click='previewLaporan()'>Cetak</button>
+			<button class="btn" style="width:125px" ng-click='alert($scope.StatusData)'>{{StatusData}}</button>					
+			<button class="btn btn-info"  ng-click='jurnalBalik()'>Jurnal Balik
+			<span class="badge">{{statusJurnalBalik}}</span></button>
+
+		</div>	
+	<br>
+	<div class='container-fluid' style=" background-color:SteelBlue; "  >
+	<table border="0" style="width:100%; " >
+		<thead>
+			<tr width='15%'></tr>	
+			<tr width='15%'></tr>	
+			<tr width='15%'></tr>	
+			<tr width='15%'></tr>	
+			<tr width='15%'></tr>	
+			<tr width='25%'></tr>					
+		</thead>			
+		<tbody>
+			<tr>
+				<td style="color:white" >No Urut</td>					
+				<td ><input type='text' ng-disabled='true' ng-model='jurnalHeader.noUrut' /> </td>
+				<td style="color:white">Issue Date</td>					
+				<td ><input type="text" 						
+							datepicker-popup="dd-MMM-yyyy" 
+							ng-model="jurnalHeader.issueDate" 
+							is-open="opened" 
+							datepicker-options="dateOptions" 
+							date-disabled="disabled(date, mode)" 
+							ng-required="true" 
+							id='jurnalHeader.issueDate'
+							close-text="Tutup" 					
+							size='15%'
+							ng-disabled="true"
+							/>
+							<button type="button" 
+									class="btn btn-info" 
+									ng-click="open($event)" 
+									ng-disabled="kondisiView">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</button>
+				</td>
+				<td style="color:white">Jenis Voucher</td>					
+				<td >
+					<select ng-model="jurnalHeader.jenisVoucher" 
+							ng-options="jenisVoucher as jenisVoucher for jenisVoucher in jenisVouchers" 
+							id='comboJenis' 
+							ng-change="cekJenisVoucher()"
+							ng-disabled="kondisiView" ></select>
+					<input type="text" ng-disabled="true" ng-model="jurnalHeader.id" size="5%" >
+				</td>
+			</tr>								
+			<tr>
+				<td style="color:white">No Voucher</td>					
+				<td ><input type='text' ng-disabled='true' ng-model='jurnalHeader.noVoucher' /> </td>
+				<td style="color:white">Booking Date</td>					
+				<td ><input type='text' ng-disabled='true' ng-model='jurnalHeader.bookingDate'  size='15%' /> </td>
+				<td style="color:white">Dibayar kepada</td>					
+				<td ><input type='text' id='idDibayarKe' ng-model='jurnalHeader.diBayar' size='45%' ng-disabled="disableDibayarKe"  /> </td>
+			</tr>				 				 
+		</tbody>
+	</table>		
+	<!-- <hr> -->
+	<br>
+	</div>
+	<!-- START isi detil -->
+	<div ng-class='classForm' class='container-fluid' style='background-color:lightgreen'  >				
+		<table border="0" style="width:100%; "  >			 
+			<tbody>								
+				<tr>
+					<td style="width:40px">D/K</td>
+					<td style="width:67px">Kode</td>
+					<td style="width:145px">Nama</td>
+					<td style="width:55px">bagian</td>
+					<td style="width:230px">Keterangan</td>
+					<td style="width:90px">Jumlah</td>
+					<td style="width:95px">kas/bank</td>
+					<td style="width:95px">Rel</td>
+					<td style="width:170px">cust</td>	
+					<td  style="width:10px"></td>
+					<td  style="width:10px"></td>
+					<td ></td>								
+				</tr>
+				<tr>					
+					<td><select ng-model="jurnalDetil.dk" 
+								ng-options="dk as dk for dk in dks" 
+								id='cmbDK'
+								ng-disabled="kondisiView" ></select></td>				
+					<td><input type='text' 
+								ng-model='jurnalDetil.accountDetil' 
+								size="7" 
+								maxlength="15" 
+								typeahead="coaDetil as coaDetil.kodePerkiraan +', ' +coaDetil.namaPerkiraan for coaDetil in coaDetils | filter:$viewValue | limitTo:8" 
+								placeholder="kode COA" 
+								ng-blur="myFunct($event)"
+								ng-disabled="kondisiView"
+								id="kodeCoa"
+								required/>
+					</td>				
+<!-- 					<td> <input type="text" ng-model="jurnalDetil.accountDetil" size="7" maxlength="6" placeholder="COA" typeahead="coaDetil as coaDetil.kodePerkiraan for coaDetil in coaDetils | filter:{kodePerkiraan:$viewValue} | limitTo:8" >
+					</td> -->
+					 <td><input type='text' ng-model='jurnalDetil.accountDetil.namaPerkiraan' ng-disabled="true" size="20" /> </td>				
+					<td><input type='text' ng-model='jurnalDetil.bagian' size="5" maxlength="4" id="idBagian" ng-disabled="kondisiView" required/> </td>
+					<td><input type='text'  ng-model='jurnalDetil.keterangan' id="txtKeterangan" size="40" maxlength="100" ng-disabled="kondisiView" ng-blur="cekLastDesc($event)" required/> </td>
+					<td><input type='number' min="0"  ng-model='jurnalDetil.jumlah' id="txtJumlah" size="11" maxlength="15" ng-disabled="kondisiView" required/> </td>
+					<td><input type='text'  ng-model='jurnalDetil.bank'  size="12" maxlength="10" typeahead="bank as bank.kode for bank in banks | filter:$viewValue | limitTo:8" placeholder="kode Bank" ng-disabled="kondisiView || !enableBank" /> </td>
+					<td><input type='text'  
+								ng-model='jurnalDetil.rel'  
+								size="12" 
+								maxlength="10" 
+								ng-disabled="kondisiView || !enableRel"/> </td>
+					<td><input 	type='text'  
+								ng-model="jurnalDetil.customer"
+                                typeahead ="customer as customer.kode + ', ' + customer.nama  for customer in 	getCustomer($viewValue) | filter:$viewValue | limitTo:15" 
+                                size="20" 
+                                maxlength="15" 
+                                ng-disabled="kondisiView || !enableCust"/> </td>
+                    <td></td>
+					<td><button class="btn btn-warning btn-block" ng-click='tambahDetil()' ng-disabled="kondisiView">Ok</button></td>
+					<!-- <td><button class="btn btn-default btn-block" ng-click='batalEdit()' ng-disabled="kondisiView || !editDetil">Batal</button></td> -->
+
+ 	
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>{{jurnalDetil.jumlah | number}}</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		
+
+		<br>
+	</div>
+	<!-- END isi detil -->
+	
+	<div style="height:500px; background-color:#D6EBFF"  class='container-fluid'  >
+		
+		<table  class="table table-bordered table-striped table-condensed table-hover" border="2px" style="background-color:white" >
+			<thead>
+				<tr>													
+					<td width="3%" >D/K</button></td>			    
+					<td width="5%" align="center">Kode</button></td>
+					<td width="13%" >Nama</button></td>			    
+				    <td width="5%" align="center">bagian</button></td> 			    			    
+				    <td width="20%">Keterangan</button></td>			    
+				    <td width="10%">Jumlah</button></td> 			    			 				    
+				    <td width="5%">kas/bank</button></td>			    
+				    <td width="5%" align="center">Rel</button></td>			    
+				    <td width="15%" align="center">Cust</button></td>			    
+				    <td width="5%" align="center">DEL</td>
+				    <td width="5%" align="center">Edit</td>
+				</tr>	
+
+			</thead>
+
+			<tbody>
+				<tr ng-repeat='JurnalDetil in jurnalDetils' >					
+					<td>{{JurnalDetil.dk}}</td>
+					<td>{{JurnalDetil.accountDetil.kodePerkiraan}}</td>
+					<td>{{JurnalDetil.accountDetil.namaPerkiraan}}</td>							    
+					<td>{{JurnalDetil.bagian}}</td>				
+				    <td>{{JurnalDetil.keterangan}}</td> 
+				    <td>{{JurnalDetil.debet + JurnalDetil.kredit | currency:""  }}</td>					    <td>{{JurnalDetil.bank.kode}}</td>					
+				    <td>{{JurnalDetil.rel}}</td>									    
+				    <td>{{JurnalDetil.customer.kode}}</td> 		    				   	
+				    <td><button type='button' class='btn btn-danger btn-block btn-sm'
+				    	ng-click='hapusDetil(JurnalDetil.id, JurnalDetil.accountDetil.namaPerkiraan)' ng-disabled="kondisiView"
+				    	>Delete</button>
+				    </td>		 
+				    <td><button type='button' class='btn btn-warning btn-block btn-sm'
+				    	ng-click='editDetil(JurnalDetil.id)' ng-disabled="kondisiView"
+				    	>Edit</button>
+				    </td>		 
+				</tr>		
+			</tbody>
+		</table>	
+	</div>
+	<div class="container-fluid" style="background-color:DarkCyan">
+		<table border="0" style="width:100%; ">
+			<thead>
+				<tr>														
+					<td width="50%" ></button></td>			    
+				    <td width="25%" ></button></td> 			    			    
+				    <td width="25%"></button></td>			    				    
+				</tr>	
+			</thead>
+			<tbody>
+				<tr >
+					<td>
+						<pagination total-items="totalItems" items-per-page="itemsPerPage" 
+	         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></pagination>	    				
+					</td>
+					<td style="color:white">
+						Total Debet : Rp <span >{{totalDebet | currency:""}}</span>
+					</td>			
+					<td style="color:white">
+						Total Kredit : Rp <span>{{totalKredit | currency:""}}</span>
+					</td>			
+				</tr>				
+			</tbody>
+			
+		</table>
+	</div>	
+</div>
+
+
+

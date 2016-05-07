@@ -1,0 +1,112 @@
+
+<div growl></div>
+<h2 style='color:green' >Unit Kerja</h2>
+<hr>
+
+
+<div class='container-fluid' collapse="tutupGrid" >
+	<div>
+		Cari Nama User : <input id='idCari' type='text' ng-model='search' ng-change='getAll()' >
+		<br><br>	
+		<input type='button' 				
+				class='btn btn-primary btn-sm'
+				ng-click='tambah()'				
+				value="  Add New " 
+				style='width:15em; height:3em'				
+				/>
+	</div>
+	<br>
+	<!-- ng-class='{red: hover}' ng-mouseenter="hover=true" ng-mouseleave="hover=false"  -->
+	<!--  table-hover table-striped -->
+	<table class="table table-bordered table-condensed table-hover table-striped">
+		<thead>
+			<tr>
+				<td width="15%"><button class="btn btn-block btn-default" ng-click='urut("idUnitKerja")'>ID</button></td>    
+			    <td width="55%"><button class="btn btn-block btn-default" ng-click='urut("namaUnitKerja")'>Nama Unit Kerja</button></td> 
+			    <td width="15%"></td>
+			    <td width="15%"></td>
+			</tr>	
+		</thead>
+		<tbody>
+		<!-- | startFrom:currentPage*pageSize | limitTo:pageSize   -->
+			<tr ng-repeat='user in users | orderBy:userId '
+				ng-class='{terpilih:hover}' ng-mouseenter="hover=true" ng-mouseleave="hover=false"
+			 >
+				<td class='text-center'>{{user.idUnitKerja}}</td>				
+			    <td>{{user.namaUnitKerja}}</td> 
+			    <td><button type='button' class='btn btn-warning btn-block btn-sm'
+			    	ng-click='ubahUnitKerja(user.idUnitKerja,user.namaUnitKerja,$index)'
+			    	>Edit</button></td>
+			    <td><button type='button' class='btn btn-danger btn-block btn-sm'
+			    	ng-click='hapusUnitKerja(user.idUnitKerja,user.namaUnitKerja)'
+			    	>Delete</button></td>		    
+			</tr>		
+		</tbody>
+	</table>
+
+        
+    <div class="row">
+        <pagination total-items="totalItems" items-per-page="itemsPerPage" 
+         	ng-model="currentPage" ng-change="pageChanged()"></pagination>
+    </div>
+    <div>    	
+        <p class="text-center">            
+            <span class="class-input">Halaman  {{currentPage}} dari </span>                    
+        </p>
+         
+    </div>
+</div>
+
+<div collapse="!tutupGrid" ng-class='classForm' class='container-fluid' style='color:whitesmoke'  >
+	<div>
+		<h3 >Detil</h3>
+		<hr>
+		<table >
+			<thead>
+				<tr width='20%'></tr>	
+				<tr width='5%'></tr>	
+				<tr width='40%'></tr>	
+				<tr width='35%'></tr>	
+			</thead>			
+			<tbody>
+				<tr>
+					<td>Id</td>
+					<td>:</td>
+					<td ><input type='text' ng-disabled='true' ng-model='user.idUnitKerja' /> </td>
+				</tr>				
+				<tr>
+					<td>Nama</td>
+					<td>:</td>
+					<td><input type='text' maxlength='90' ng-model='user.namaUnitKerja' style='width:100%' /> </td>
+				</tr>
+			</tbody>
+		</table>
+		<br>		
+
+		<table border='0' >
+			<thead>
+				<tr >
+					<td width='8%'></td>
+					<td width='1%'></td>
+					<td width='8%'></td>
+					<td width='20%'></td>
+					<td width='20%'></td>
+				</tr>	
+			</thead>			
+			<tbody>
+				<tr>
+					<td><button class="btn btn-warning btn-block" ng-click='proses()'>Ok</button></td>
+					<td></td>					
+					<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close</button></td>
+					<td></td>					
+					<td></td>					
+				</tr>
+			</tbody>
+		</table>
+		
+
+	</div>
+	<br>
+</div>
+
+

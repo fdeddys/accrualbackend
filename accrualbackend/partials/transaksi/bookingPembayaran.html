@@ -1,0 +1,217 @@
+<div growl></div> 
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Pengisian Book Date </h3>
+  </div>
+  <div class="panel-body">
+
+	<div class='container-fluid' collapse="tutupGrid" style="background-color:whitesmoke" >
+		<br>
+		<div class='container-fluid' style="background-color:#CEECF5" >	
+		<br>
+		Cari no urut     : <input type='text' ng-model='searchNoUrut' ng-change='getAll()' >
+		Cari no voucher  : <input type='text' ng-model='searchNoVoucher' ng-change='getAll()' >
+		Dari  : 
+			<input type="text" 						
+				datepicker-popup="dd-MMM-yyyy" 
+				ng-model="tgl1" 
+				is-open="opened" 
+				datepicker-options="dateOptions" 
+				date-disabled="disabled(date, mode)" 
+				ng-required="true" 
+				id='tgl1'
+				close-text="Tutup" 					
+				size='15%'
+				ng-readonly="true"
+				/>
+				<button type="button" class="btn btn-info" ng-click="open($event)">
+					<i class="glyphicon glyphicon-calendar"></i>
+				</button>
+		s/d  :
+			<input type="text" 						
+				datepicker-popup="dd-MMM-yyyy" 
+				ng-model="tgl2" 
+				is-open="opened2" 
+				datepicker-options="dateOptions" 
+				date-disabled="disabled(date, mode)" 
+				ng-required="true" 
+				id='tgl2'
+				close-text="Tutup" 					
+				size='15%'
+				ng-readonly="true"
+				/> 
+				<button type="button" class="btn btn-info " ng-click="open2($event)">
+					<i class="glyphicon glyphicon-calendar"></i>
+				</button>
+			<br>status :			
+			<select ng-model="cariStatus" ng-options="statusVoucher as statusVoucher for statusVoucher in statusVouchers" ></select>
+			<button class="btn btn-info " size='10%' ng-click='getAll()'  ><span class="glyphicon glyphicon-refresh" aria-hidden="true">    Refresh   </button>
+		<br>	
+		<br>	
+		</div>
+
+		<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF" >
+			<thead>
+				<tr>				
+				<!-- -->
+					<td width="5%" align="center"><button class="btn btn-block btn-default" ng-click='urut("id")'>Id</button></td>
+					<td width="12%" ><button class="btn btn-block btn-default" ng-click='urut("jenisVoucher")'>Jenis</button></td>			    
+				    <td width="15%"><button class="btn btn-block btn-default" ng-click='urut("noUrut")'>No Urut</button></td> 			    			    
+				    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("issueDate")'>Issue Date</button></td>
+				    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("bookingDate")'>Booking Date</button></td>
+				    <td width="15%"><button class="btn btn-block btn-default" ng-click='urut("noVoucher")'>No Voucher</button></td> 			    			    
+				    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("statusVoucher")'>Status</button></td>			    
+				    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("user.nama")'>User</button></td>			    
+				    <td width="13%" ></td>
+				    <!-- <td width="10%"></td> -->
+				</tr>	
+			</thead>
+			<tbody>
+				<tr ng-repeat='jurnalHeader in jurnalHeaders | orderBy:orderJurnalHeader ' >
+					<td>{{jurnalHeader.id}}</td>
+					<td>{{jurnalHeader.jenisVoucher}}</td>							    
+					<td>{{jurnalHeader.noUrut}}</td>				
+				    <td>{{jurnalHeader.issueDate | date:'dd-MMM-yyyy'}}</td> 
+				    <td>{{jurnalHeader.bookingDate | date:'dd-MMM-yyyy'}}</td> 
+				    <td>{{jurnalHeader.noVoucher}}</td>					
+				    <td>{{jurnalHeader.statusVoucher}}</td>
+				    <td>{{jurnalHeader.user.nama}}</td> 		    				    
+				    <td><button type='button' class='btn btn-warning btn-block btn-sm'
+				    	ng-click='prosesBookingDate(jurnalHeader.id, $index)'
+				    	>Proses Book date</button></td>		    
+				</tr>		
+			</tbody>
+		</table>
+
+		<div class="container">
+        <pagination total-items="totalItems" items-per-page="itemsPerPage" 
+         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></pagination>
+    	</div>
+
+	</div>	
+
+	<div collapse="!tutupGrid" ng-class='classForm' class='container-fluid' style='color:whitesmoke'  >
+	<div>				
+		<div class='container-fluid' style=" background-color:lightBlue; "  >
+		<br>
+			<table border="0" style="width:100%; " >
+				<thead >
+					<tr width='15%'></tr>	
+					<tr width='15%'></tr>	
+					<tr width='15%'></tr>	
+					<tr width='15%'></tr>	
+					<tr width='15%'></tr>	
+					<tr width='25%'></tr>					
+				</thead>			
+				<tbody>
+					<tr >
+						<td style="color:white" >No Urut</td>					
+						<td style="color:white" >{{isiJurnalHeader.noUrut}}</td>
+						<td style="color:white" >Issue Date </td>					
+						<td style="color:white" >{{isiJurnalHeader.issueDate | date:'dd-MMM-yyyy'}}</td>
+						<td style="color:white" >Jenis Voucher</td>					
+						<td style="color:white">{{isiJurnalHeader.jenisVoucher}}</td>
+					</tr>								
+					<tr>
+						<td style="color:white" >No Voucher</td>					
+						<td style="color:white" ><input type='text' ng-disabled='true' ng-model='isiJurnalHeader.noVoucher' /></td>
+						<td style="color:white" >Booking Date</td>					
+						<td style="color:white" >
+						<input 	type="text" 						
+								datepicker-popup="dd-MMM-yyyy" 
+								ng-model="isiJurnalHeader.bookingDate" 
+								is-open="opened3" 
+								datepicker-options="dateOptions" 
+								date-disabled="disabled(date, mode)" 
+								ng-required="true" 
+								id='tgl3'
+								close-text="Tutup" 													
+								ng-readonly="true"
+								/> 
+								<button type="button" class="btn btn-info " ng-click="open3($event)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+						</td>
+						<td style="color:white" >Dibayar kepada</td>					
+						<td style="color:white" >{{isiJurnalHeader.diBayar}}</td>
+					</tr>				 				 
+				</tbody>
+			</table>	
+			<br>	
+			<!-- <hr> -->
+			<!-- DETIL JURNAL -->
+			<div style="height:330px; background-color:#F6CECE"  class='container-fluid'  >
+				<br>
+				<table  class="table table-bordered table-striped table-condensed table-hover" border="2px" style="background-color:white" >
+					<thead>
+						<tr>													
+							<td width="3%" >D/K</button></td>			    
+							<td width="5%" align="center">Kode</button></td>
+							<td width="18%" >Nama</button></td>			    
+						    <td width="5%" align="center">bagian</button></td> 			    			    
+						    <td width="20%">Keterangan</button></td>			    
+						    <td width="10%">Jumlah</button></td> 			    			
+						    <td width="5%">kas/bank</button></td>			    
+						    <td width="7%" align="center">Rel</button></td>			    
+						    <td width="8%" align="center">Cust</button></td>
+						</tr>	
+					</thead>
+					<tbody>
+						<tr ng-repeat='JurnalDetil in jurnalDetils' >					
+							<td>{{JurnalDetil.dk}}</td>
+							<td>{{JurnalDetil.accountDetil.kodePerkiraan}}</td>
+							<td>{{JurnalDetil.accountDetil.namaPerkiraan}}</td>							    
+							<td>{{JurnalDetil.bagian}}</td>				
+						    <td>{{JurnalDetil.keterangan}}</td> 
+						    <td>{{JurnalDetil.debet + JurnalDetil.kredit | currency:""  }}</td>	
+						    <td>{{JurnalDetil.bank.kode}}</td>					
+						    <td>{{JurnalDetil.rel}}</td>									    
+						    <td>{{JurnalDetil.customer.kode}}</td> 
+						</tr>		
+					</tbody>
+				</table>	
+			</div>
+			<div class="container-fluid" style="background-color:DarkCyan">
+				<table border="0" style="width:100%; ">
+					<thead>
+						<tr>														
+							<td width="40%" ></button></td>			    
+						    <td width="15%" ></button></td> 			    			    
+						    <td width="15%"></button></td>			    				    
+						    <td width="15%" ></button></td> 			    			    
+						    <td width="15%"></button></td>			    				    
+
+						</tr>	
+					</thead>
+					<tbody>
+						<tr >
+							<td>
+								<pagination total-items="totalItems2" items-per-page="itemsPerPage2" 
+			         	ng-model="currentPage2" ng-change="pageChanged2()" max-size="10" boundary-links="true" rotate="false"></pagination>	    				
+							</td>
+							<td>
+								<button type='button' class='btn btn-info btn-block btn-sm' ng-click='tutupGrid=!tutupGrid'>Close <span class='glyphicon glyphicon-remove'></span></button>
+							</td>
+							<td>
+								<button type='button' class='btn btn-danger btn-block btn-sm' ng-click='updateData()'>Proses <span class='glyphicon glyphicon-ok'></span></button>
+							</td>
+							<td style="color:white" align='right'>
+								<span >Debet :{{totalDebet | currency:""}}</span>
+							</td>			
+							<td style="color:white" align='right'>
+								Kredit :<span >{{totalKredit | currency:""}}</span>
+							</td>			
+						</tr>				
+					</tbody>
+					
+				</table>
+			</div>
+			<!-- END DETIL JURNAL -->
+			<br>
+		</div>			
+		
+	</div>
+
+  </div>
+</div>

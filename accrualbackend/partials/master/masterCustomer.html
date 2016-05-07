@@ -1,0 +1,179 @@
+<div growl></div> 
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Input / Edit Data Customer</h3>
+  </div>
+  <div class="panel-body">
+
+		<div class='container-fluid' uib-collapse="tutupGrid"  >
+			<div>
+				Cari Nama  : <input id='idCari' type='text' ng-model='search' ng-change='getAll()' >
+					
+				<input type='button' 				
+						class='btn btn-primary '
+						ng-click='tambahCustomer()'						
+						value="  Add New " 
+						style='width:15em; height:3em'				
+						/>
+				<input type='button' 				
+						class='btn '
+						ng-click='previewLaporan()'						
+						value="  Preview " 
+						style='width:15em; height:3em'				
+						/>
+			</div>
+			<br>
+			<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF"  >
+				<thead>
+					<tr>
+						<td width="5%"><button class="btn btn-block btn-default" ng-click='urut("kode")'>kode</button></td>    
+					    <td width="25%"><button class="btn btn-block btn-default" ng-click='urut("nama")'>Nama</button></td> 
+					    <td width="10%" align="center"><button class="btn btn-block btn-default" >Kota</button></td>
+					    <td width="13%" align="center"><button class="btn btn-block btn-default" >Bank</button></td>
+					    <td width="12%" align="center"><button class="btn btn-block btn-default" >Rek</button></td>
+					    <td width="15%" colspan="2"></td>
+					    <!-- <td width="10%"></td> -->
+					</tr>	
+				</thead>
+				<tbody>
+					<tr ng-repeat='customer in customers | orderBy:orderCustomer ' >
+						<td>{{customer.kode}}</td>				
+					    <td>{{customer.nama}}</td> 					    			
+					    <td>{{customer.kota}}</td> 
+					    <td>{{customer.namaBank}}</td>	
+					    <td>{{customer.noRekening}}</td>	
+					    <td><button type='button' class='btn btn-warning btn-block btn-ms'
+					    	ng-click='ubahCustomer(customer.id,customer.nama,$index)'
+					    	><span> Edit </span></button></td>
+					    <td><button type='button' class='btn btn-danger btn-block btn-ms'
+					    	ng-click='hapusCustomer(customer.id,customer.nama)'
+					    	>Delete</button></td>		    
+					</tr>		
+				</tbody>
+			</table>
+			<div class="row">
+		        <uib-pagination total-items="totalItems" items-per-page="itemsPerPage" 
+		         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></uib-pagination>
+		    </div>
+		</div>
+
+		<div uib-collapse="!tutupGrid" ng-class='classForm' class='container-fluid' style='color:whitesmoke'  >
+			<div>
+				<h3 >Detil</h3>
+				<hr>
+
+				<form class="form-horizontal">
+		    
+				    <div class="form-group form-group-sm">
+				        <label for="id" class="col-sm-2 control-label">ID</label>
+				        <div class="col-sm-2">
+				        	<input type='text' class="form-control " ng-disabled='true' id="id" ng-model='customer.id' />              
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="kode" class="col-sm-2 control-label">Kode</label>
+				        <div class="col-sm-2">     
+				        	<input type='text' ng-disabled="!editKode"  ng-model='customer.kode' size="20"  maxlength='15' class="form-control " id="kode"/>       
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="nama" class="col-sm-2 control-label">Nama</label>
+				        <div class="col-sm-6">     
+				        	<input type='text' id='nama' maxlength='90' ng-model='customer.nama' size="50" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="alamat" class="col-sm-2 control-label">Alamat</label>
+				        <div class="col-sm-10	">     
+				        	<input type='text' id='alamat' maxlength='90' ng-model='customer.alamat' size="50" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="Kota" class="col-sm-2 control-label">Kota</label>
+				        <div class="col-sm-7">     
+				        	<input type='text' id='Kota' maxlength='90' ng-model='customer.kota' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="telp" class="col-sm-2 control-label">Telepon</label>
+				        <div class="col-sm-4">     
+				        	<input type='text' id='telp' maxlength='40' ng-model='customer.telp' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="fax" class="col-sm-2 control-label">fax</label>
+				        <div class="col-sm-4">     
+				        	<input type='text' id='fax' maxlength='40' ng-model='customer.fax' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+					<div class="form-group form-group-sm">
+				        <label for="npwp" class="col-sm-2 control-label">N P W P</label>
+				        <div class="col-sm-5">     
+				        	<input type='text' id='npwp' maxlength='40' ng-model='customer.npwp' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="namaBank" class="col-sm-2 control-label">Nama Bank</label>
+				        <div class="col-sm-6">     
+				        	<input type='text' id='namaBank' maxlength='40' ng-model='customer.namaBank' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="noRekening" class="col-sm-2 control-label">No Rekening</label>
+				        <div class="col-sm-5">     
+				        	<input type='text' id='noRekening' maxlength='40' ng-model='customer.noRekening' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="namaCabangBank" class="col-sm-2 control-label">Cabang Bank</label>
+				        <div class="col-sm-7">     
+				        	<input type='text' id='namaCabangBank' maxlength='40' ng-model='customer.namaCabangBank' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="kontakPerson" class="col-sm-2 control-label">kontak Person</label>
+				        <div class="col-sm-6">     
+				        	<input type='text' id='kontakPerson' maxlength='40' ng-model='customer.kontakPerson' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
+				        <label for="status" class="col-sm-2 control-label">Status</label>
+				        <div class="col-sm-2">     
+				        	<select ng-model="customer.status" ng-options="statusCustomer as statusCustomer for statusCustomer in statusCustomers" class="form-control " id='status'></select>    
+				        </div>
+				    </div>
+
+				</form>
+				
+				<br>		
+
+				<table border='0' >
+					<thead>
+						<tr >
+							<td width='8%'></td>
+							<td width='1%'></td>
+							<td width='8%'></td>
+							<td width='20%'></td>
+							<td width='20%'></td>
+						</tr>	
+					</thead>			
+					<tbody>
+						<tr>
+							<td><button class="btn btn-warning btn-block" ng-click='proses()'>Ok</button></td>
+							<td></td>					
+							<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close</button></td>
+							<td></td>					
+							<td></td>					
+						</tr>
+					</tbody>
+				</table>
+				
+
+			</div>
+			<hr>	
+		</div>
+
+
+  </div>
+</div>

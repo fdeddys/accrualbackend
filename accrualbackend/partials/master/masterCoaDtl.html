@@ -1,0 +1,153 @@
+<div growl></div> 
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="#masterCoaHeader">C O A Header</a></li>
+  <li role="presentation" class="active"><a> C O A Detil</a></li>  
+</ul>
+
+<div class='container-fluid' uib-collapse="tutupGrid"   style="background-color:white" >
+<br>
+	<div>
+		Cari Nama  : <input id='idCari' type='text' ng-model='searchNama' ng-change='getAll()' >
+		Cari kode  : <input id='idCari' type='text' ng-model='searchKode' ng-change='getAll()' >
+		<br><br>	
+		<input type='button' 				
+				class='btn btn-primary btn-xm'
+				ng-click='tambahCoaDtl()'				
+				value="  Add New " 
+				style='width:15em; height:3em'				
+				/>
+	</div>
+	<br>
+	<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF"  >
+		<thead>
+			<tr>
+				<td width="5%" align="center"><button class="btn btn-block btn-default">Kd</button></td>	
+				<td width="15%" align="center"> <button class="btn btn-block btn-default" >Group</button></td>			    
+				<!-- <td width="5%">Id</td> -->
+			    <td width="5%"><button class="btn btn-block btn-default" ng-click='urut("kodePerkiraan")'>Kd</button></td> 			    			    
+			    <td width="40%" align="center"><button class="btn btn-block btn-default" ng-click='urut("namaPerkiraan")'>nama</button> </td>	
+			    <td width="10%" align="center"><button class="btn btn-block btn-default" ng-click='urut("status")'>Status</button> </td>			    
+			    <td width="15%" colspan="2"><button class="btn btn-block btn-default" >Action</button></td>
+			    <!-- <td width="10%"></td> -->
+			</tr>	
+		</thead>
+		<tbody>
+			<tr ng-repeat='coaDtl in coaDtls  ' >
+				<td>{{coaDtl.accountHeader.kodeAccount}}</td>
+				<td>{{coaDtl.accountHeader.namaAccount}}</td>
+				<!-- <td>{{coaDtl.idAccountDtl}}</td>				 -->
+			    <td>{{coaDtl.kodePerkiraan}}</td> 
+			    <td>{{coaDtl.namaPerkiraan}}</td>	
+			    <td>{{coaDtl.status}}</td>							    
+			    <td><button type='button' class='btn btn-warning btn-block btn-sm'
+			    	ng-click='ubahCoa(coaDtl.idAccountDtl,$index)'
+			    	><span> Edit </span></button></td>
+			    <td><button type='button' class='btn btn-danger btn-block btn-sm'
+			    	ng-click='hapusCoa(coaDtl.idAccountDtl,coaDtl.namaPerkiraan)'
+			    	>Delete</button></td>		    
+			</tr>		
+		</tbody>
+	</table>
+	<div class="row">
+        <uib-pagination total-items="totalItems" items-per-page="itemsPerPage" 
+         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></uib-pagination>
+    </div>
+</div>
+
+<div uib-collapse="!tutupGrid" ng-class='classForm' class='container-fluid' style='color:whitesmoke'  >
+	<div>
+		<h3 >Detil</h3>		
+		<br>
+		<hr>
+		<form class="form-horizontal">
+		    
+		    <div class="form-group form-group-sm">
+		        <label for="id" class="col-sm-2 control-label">ID</label>
+		        <div class="col-sm-2">
+		        	<input type='text' class="form-control " ng-disabled='true' id="id" ng-model='coaDtl.idAccountDtl' />              
+		        </div>
+		    </div>
+		    <div class="form-group form-group-sm">
+		        <label for="kode" class="col-sm-2 control-label">Kode</label>
+		        <div class="col-sm-2">
+		        	<input type='text' class="form-control "  id="kode" ng-model='coaDtl.kodePerkiraan' size="20"   />              
+		        </div>
+		    </div>
+		    <div class="form-group form-group-sm">
+		        <label for="Nama" class="col-sm-2 control-label">Nama</label>
+		        <div class="col-sm-8">
+		        	<input type='text' class="form-control " id="Nama"  maxlength='100' ng-model='coaDtl.namaPerkiraan' size="50" />
+		        </div>
+		    </div>
+		    <div class="form-group form-group-sm">
+		        <label for="header" class="col-sm-2 control-label">Header</label>
+		        <div class="col-sm-7">
+		        	<td><input type='text'  ng-model='coaDtl.accountHeader' size="100"  uib-typeahead="coaHdr as coaHdr.kodeAccount + ' - ' + coaHdr.namaAccount for coaHdr in coaHdrs | filter:$viewValue | limitTo:8" placeholder="ketik nama COA header" id="header" class="form-control " /> 	
+		        </div>
+		    </div>
+		    <div class="form-group form-group-xm">
+		        <label for="rel" class="col-sm-2 control-label">Rel</label>
+		        <div class="col-sm-1">
+		        	<input type='checkbox' ng-model='coaDtl.rel' id="rel"  /> 
+		        </div>
+		    </div>
+		    <div class="form-group form-group-xm">
+		        <label for="cust" class="col-sm-2 control-label">cust</label>
+		        <div class="col-sm-1">
+		        	<input type='checkbox' ng-model='coaDtl.cust'  id="cust"  /> 
+		        </div>
+		    </div>
+		    <div class="form-group form-group-xm">
+		        <label for="cashBank" class="col-sm-2 control-label">Cash/bank</label>
+		        <div class="col-sm-1">
+		        	<input type='checkbox' ng-model='coaDtl.cashBank'  id="cashBank"  /> 
+		        </div>
+		    </div>
+		    <div class="form-group form-group-sm">
+		        <label for="status" class="col-sm-2 control-label">Status</label>
+		        <div class="col-sm-3">
+		        	<select ng-model="coaDtl.status" ng-options="statusCoaDetil as statusCoaDetil for statusCoaDetil in statusCoaDetils" id="status" ></select>
+		        </div>
+		    </div>
+		    <div class="form-group form-group-sm">
+		        <label for="status" class="col-sm-2 control-label">Auto</label>
+		        <div class="col-sm-6">
+		        	<input type='checkbox' ng-model='coaDtl.autoGenerateNo' /> 
+					Header    <input type='text' maxlength='20' ng-model='coaDtl.headerAutoGenerateNo' size="20"  />
+		        </div>
+		    </div>
+		    <div class="form-group form-group-sm">
+		        <label for="tipeVoucher" class="col-sm-2 control-label">Posisi</label>
+		        <div class="col-sm-2">
+		        	<select ng-model="coaDtl.tipeVoucher" ng-options="tipeVoucher as tipeVoucher for tipeVoucher in tipeVouchers" class="form-control " id="tipeVoucher"></select>
+		        </div>
+		    </div>
+
+		</form>		
+		<br>		
+
+		<table border='0' >
+			<thead>
+				<tr >
+					<td width='8%'></td>
+					<td width='1%'></td>
+					<td width='8%'></td>
+					<td width='20%'></td>
+					<td width='20%'></td>
+				</tr>	
+			</thead>			
+			<tbody>
+				<tr>
+					<td><button class="btn btn-warning btn-block" ng-click='proses()'>Ok</button></td>
+					<td></td>					
+					<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close</button></td>
+					<td></td>					
+					<td></td>					
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+
+	<hr>	
+</div>

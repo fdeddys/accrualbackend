@@ -1,0 +1,98 @@
+
+<div growl></div>
+<hr>
+<div  class='container-fluid' style='color:blue; background-color:#7094FF'  >
+	<div>
+		<h3 > Config Accrual Basis</h3>
+		<hr>
+		<table border="0" width="100%" >
+			<col width="25%"></col>
+			<col width="5%"></col>
+			<col width="70%"></col>
+			<!-- <thead>
+				<tr style='width=50px'>1</tr>	
+				<tr style='width=20px'>2</tr>	
+				<tr style='width=20px'>3</tr>	
+				<tr style='width=20px'>4</tr>	
+			</thead> -->
+			<tbody>
+				<tr>
+					<td >Id</td>
+					<td >:</td>
+					<td ><input type='text' ng-disabled='true' ng-model='accrualConfig.id' size="2"  /> </td>
+					
+				</tr>				
+
+				 <tr>
+					<td >Voucher Penerimaan</td>
+					<td>:</td>
+					<td > <input type='text' ng-model='accrualConfig.headerPenerimaan' size="5" maxlength="2"  /> </td>
+					<td></td>
+				</tr>						
+				
+				<tr>
+					<td>Voucher Pembayaran</td>
+					<td>:</td>
+					<td><input type='text'  ng-model='accrualConfig.headerPembayaran'  size="5" maxlength="2" /> </td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Voucher Pemindahan</td>
+					<td>:</td>
+					<td ><input type='text' ng-model='accrualConfig.headerPemindahan' size="5" maxlength="2"/>
+					<td></td>
+				</tr>				
+				
+				<tr>
+					<td>COA Bank</td>
+					<td>:</td>
+					<td><input type='text' ng-model='accrualConfig.coaBank' size="10" maxlength="6" /> <input type="button" value="cek kode" ng-click='check(accrualConfig.coaBank)'>
+					</td></td>
+					<td></td>
+				</tr>						
+				<tr>
+					<td>COA Kas</td>
+					<td>:</td>
+					<td><input type='text'  ng-model='accrualConfig.coaKas'  size="10" maxlength="6" /> <input type="button" value="cek kode" ng-click='check(accrualConfig.coaKas)'>
+					</td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>COA Hutang untuk jurnal balik</td>
+					<td>:</td>
+					<td><input type='text'  ng-model='accrualConfig.coaJurnalBalik'  size="10" maxlength="6" /> <input type="button" value="cek kode" ng-click='check(accrualConfig.coaJurnalBalik)'>
+					</td></td>
+					<td></td>
+				</tr> 
+				
+			</tbody>
+		</table>
+		<br>		
+
+		<table border='0' >
+			<thead>
+				<tr >
+					<td width='8%'></td>
+					<td width='1%'></td>
+					<td width='8%'></td>
+					<td width='20%'></td>
+					<td width='20%'></td>
+				</tr>	
+			</thead>			
+			<tbody>
+				<tr>
+					<td><button class="btn btn-warning btn-block" ng-click='proses()'>Save</button></td>
+					<td></td>					
+					<td></td>
+					<td></td>					
+					<td></td>					
+				</tr>
+			</tbody>
+		</table>
+		
+
+	</div>
+	<br>
+</div>
+
+

@@ -1,0 +1,18 @@
+# ignore
+accrualbackend/js/angular
+accrualbackend/js/angular/ui-bootstrap-tpls.js
+accrualbackend/js/angular/ui-grid-unstable.js
+
+accrualbackend/js/bootstrap/bootstrap.js
+accrualbackend/js/bootstrap/ui-bootstrap-tpls-0.11.0.js
+accrualbackend/js/jQuery/jquery-2.1.1.js
+
+
+accrualbackend/css/angular-growl.min.css
+accrualbackend/css/bootstrap.css
+accrualbackend/css/bootstrap.css.map
+accrualbackend/css/ui-grid-unstable.css
+accrualbackend/css/ui-grid.eot
+accrualbackend/css/ui-grid.svg
+accrualbackend/fonts
+

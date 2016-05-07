@@ -1,0 +1,223 @@
+<!doctype html>
+<html  lang="en" ng-app="appAccrual">
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">	    
+		<title>Accrual Basic ver :00000</title>	
+		
+		<script type="text/javascript" src="js/angular/angular.js"></script>
+		<script type="text/javascript" src="js/angular/angular-route.js"></script>
+		<script type="text/javascript" src="js/angular/angular-growl.js"></script>		
+		<script type="text/javascript" src="js/angular/angular-cookies.js"></script>	
+		<script type="text/javascript" src="js/angular/angular-animate.js"></script>		
+
+		<!--script type="text/javascript" src="js/jQuery/jquery-2.1.1.js"></script--> 		 
+		<script type="text/javascript" src="js/angular/ui-bootstrap-tpls.js"></script>
+		<!--script type="text/javascript" src="js/bootstrap/bootstrap.js"></script-->
+
+		<script type="text/javascript" src="js/app/utama.js"></script>
+		
+		<!-- SERVICE -->
+		<script type="text/javascript" src="js/app/service/masterService.js"></script>
+		<script type="text/javascript" src="js/app/service/transaksiService.js"></script>		
+		<script type="text/javascript" src="js/app/service/serviceAuth.js"></script>
+		<script type="text/javascript" src="js/app/service/utilityService.js"></script>
+		<!-- Master Service -->
+		<script type="text/javascript" src="js/app/service/bagianService.js"></script>
+		<script type="text/javascript" src="js/app/service/bankService.js"></script>
+		<script type="text/javascript" src="js/app/service/customerService.js"></script>
+		<script type="text/javascript" src="js/app/service/coaService.js"></script>
+		<script type="text/javascript" src="js/app/service/direktoratService.js"></script>
+		
+		
+		<!-- CONTROLLER -->
+		<script type="text/javascript" src="js/app/controller/utamaController.js"></script>					
+		<script type="text/javascript" src="js/app/controller/utilityController.js"></script>				
+		<!-- Master Controller -->
+		<script type="text/javascript" src="js/app/controller/bankController.js"></script>
+		<script type="text/javascript" src="js/app/controller/bagianController.js"></script>
+		<script type="text/javascript" src="js/app/controller/direktoratController.js"></script>
+		<script type="text/javascript" src="js/app/controller/coaController.js"></script>
+		<script type="text/javascript" src="js/app/controller/customerController.js"></script>
+				
+		<!-- Accrual Config -->
+		<script type="text/javascript" src="js/app/configAccrual/accrualConfigService.js"></script>
+		<script type="text/javascript" src="js/app/configAccrual/accrualConfigController.js"></script>
+
+		<!-- Jurnal  -->
+		<script type="text/javascript" src="js/app/jurnal/jurnalService.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/jurnalController.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/jurnalDetilService.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/jurnalDetilController.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/jurnalBalikService.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/jurnalBalikController.js"></script>
+
+		<!-- ISI BOOKING DATE -->
+		<script type="text/javascript" src="js/app/jurnal/isiBookingController.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/isiBookingService.js"></script>
+
+ 		<!-- PRINTING -->
+ 		<script type="text/javascript" src="partials/printing/jurnalPrintingController.js"></script>
+
+ 		
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="css/styleSendiri.css">
+		<link rel="stylesheet" type="text/css" href="css/angular-growl.min.css">
+		
+		<base href="#/">			
+	</head>
+
+	<body >	
+		
+<!-- 
+		<div ng-controller="menuBarController" >		
+			<nav class="navbar  navbar-default navbar-top " role="navigation" >
+		      <div class="container-fluid" >
+		        <div class="navbar-header">
+		          <a class="navbar-brand" href="#/login"><img src="img/logo.jpg"></a>
+		          <a class="navbar-brand" href="#/">		          
+		          <span style='color:lightblue'>Accrual Basis ver :0000</span> 
+		          </a>
+		        </div>
+
+		        <div ng-show="isLogin">
+		          <ul class="nav navbar-nav">
+		            <li class="dropdown">
+		              <a ng-click="$event.preventDefault()" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Master <span class="caret"></span></a>
+		              <ul class="dropdown-menu">
+		              <li ><a href="#/masterDirektorat"><span class='glyphicon glyphicon-globe'></span> Direktorat</a></li><li><a href="#/masterBagian"><span class='glyphicon glyphicon-home'></span> Bagian</a></li>
+		                <li><a href="#/masterCustomer"><span class='glyphicon glyphicon-paperclip'></span> Customer</a></li>
+		                <li><a href="#/masterBank"><span class='glyphicon glyphicon-gbp'></span> Bank</a></li>
+		                <li><a href="#/masterCoaHeader"><span class='glyphicon glyphicon-list-alt'></span> C O A</a></li>	                
+		              </ul>
+		            </li>
+
+		            <li class="dropdown">
+		              <a ng-click="$event.preventDefault()" href="#" class="dropdown-toggle" data-toggle="dropdown" > Transaksi <span class="caret"></span></a>
+		              <ul class="dropdown-menu">
+			              <li><a href="#/transaksiJurnalHeader"><span class='glyphicon glyphicon-book'></span> Jurnal</a></li>		  
+			              <li><a href="#/inputBooking"><span class='glyphicon glyphicon-book'></span> Booking Date Pembayaran</a></li>		  	                          
+		              </ul>
+		            </li>
+
+		            <li class="dropdown">
+		              <a class="dropdown-toggle" data-toggle="dropdown" ng-click="$event.preventDefault()" href="#">Laporan <span class="caret"></span></a>
+		              <ul class="dropdown-menu">
+		                <li><a href="#"><span class='glyphicon glyphicon-forward'></span> Laporan Harian</a></li>
+		                <li><a href="#"><span class='glyphicon glyphicon-fast-forward'></span> Laporan Bulanan</a></li>	                
+		              </ul>
+		            </li>
+
+		            <li class="dropdown">
+		              <a class="dropdown-toggle" data-toggle="dropdown" ng-click="$event.preventDefault()" href="#">Utility <span class="caret"></span></a>
+		              <ul class="dropdown-menu">
+		                <li><a href="#/masterUser"><span class="glyphicon glyphicon-user"></span>  User </a></li>
+		                <li><a href="#/config"><span class="glyphicon glyphicon-wrench"></span>  Config </a></li>
+		                <li><a href="#/login"><span class="glyphicon glyphicon-off"></span>  Logout</a></li>	                
+		              </ul>
+		            </li>
+		          </ul>
+		        </div>
+		        <div>
+		      	<p class="navbar-text navbar-right"><span  >{{namaLogin}}</span>  </p>
+		      	</div>
+		      </div>
+		      
+		    </nav>
+  		</div>	
+
+  		<div  class="container "> 		  		
+			<div  ng-view  ></div>					
+		</div>
+
+		 -->
+	    <div class="container-fluid" ng-controller="menuBarController">
+			<div class="row">
+				<div class="col-md-12" style="background-color:WhiteSmoke">				
+					<nav class="navbar navbar-default  navbar-top">				
+					<!-- navbar-fixed-top -->
+						<div class="container-fluid">
+
+							<div class="navbar-header">
+								<a class="navbar-brand" href="#/">
+									Accounting								 
+									<span class="badge">0.1</span>
+								</a>
+							</div>
+
+							<p class="navbar-text navbar-right" style="color:green">Status <a href="#/login" class="navbar-link">{{namaLogin}}  </a>  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  .</p>
+						</div>
+
+					</nav>
+			  	</div>		  
+			</div>
+
+		<div class="row">
+
+			<div class="col-md-2" style="background-color:white"  > 
+			<!-- ng-controller="menuBarController"  -->
+		  		<uib-accordion close-others="true" >
+			    	<uib-accordion-group panel-class="panel-default" is-disabled="!isLogin"  style="font-size:10px;">
+			      		<uib-accordion-heading >
+			      		<p style="font-size:13px;">
+			        		Master <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+			        	</p>
+			      		</uib-accordion-heading>
+			      			<ul class="nav nav-pills nav-stacked " >
+							  	<li role="presentation"><a href="#/masterDirektorat">Direktorat</a></li>
+							  	<li role="presentation"><a href="#/masterBagian">Bagian</a></li>
+							  	<li role="presentation"><a href="#/masterCustomer">Customer</a></li>
+							  	<li role="presentation"><a href="#/masterBank">Bank</a></li>
+							  	<li role="presentation"><a href="#/masterCoaHeader">COA Header</a></li>
+							  	<li role="presentation"><a href="#/masterCoaDetil">COA Detil</a></li>
+							</ul>
+			    	</uib-accordion-group>
+
+					<uib-accordion-group panel-class="panel-info" is-disabled="!isLogin" style="font-size:10px;">
+			      		<uib-accordion-heading >
+			      		<p style="font-size:13px;">
+			        		Transaksi <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+			        	</p>
+			      		</uib-accordion-heading>
+			      			<ul class="nav nav-pills nav-stacked ">
+							  	<li role="presentation"><a href="#/transaksiJurnalHeader">Jurnal</a></li>
+							  	<li role="presentation"><a href="#/inputBooking">Input Booking</a></li>							  	
+							</ul>
+			    	</uib-accordion-group>
+			    	<uib-accordion-group panel-class="panel-warning" is-disabled="!isLogin" style="font-size:10px;">
+			      		<uib-accordion-heading >
+			      		<p style="font-size:13px;">
+			        		Laporan <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+			        	</p>
+			      		</uib-accordion-heading>
+			      			<ul class="nav nav-pills nav-stacked ">
+			      				<li role="presentation"><a href="#/tutupBulan/true">Tutup Bulan</a></li>
+			      				<li role="presentation"><a href="#/tutupBulan/false">Buka Bulan</a></li>
+							  	<li role="presentation"><a href="#/neraca">Neraca</a></li>
+							  	<li role="presentation"><a href="#/bukuBesar">Buku Besar</a></li>
+							</ul> 
+			    		</uib-accordion-group>
+			    	<uib-accordion-group panel-class="panel-danger" is-disabled="!isLogin" style="font-size:10px;" is-open="statusOption.open">
+			      		<uib-accordion-heading >
+			      		<p style="font-size:13px;">
+			        		Utility <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+			        	</p>
+			      		</uib-accordion-heading>
+			      			<ul class="nav nav-pills nav-stacked ">
+			      				<li role="presentation"><a href="#/masterUser">User</a></li>
+			      				<li role="presentation"><a href="#/config">Config</a></li>
+			      				<li role="presentation" ng-click="keluar()"><a href="">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
+							</ul> 
+			    	</uib-accordion-group>
+		  		</uib-accordion>
+		  	</div>
+		  	<div class="col-md-10" style="background-color:White">		  		
+		  		<ng-view></ng-view>		  		
+		  	</div>
+		</div>
+
+	    <!-- <div class="clearfix visible-lg"></div> -->
+	    </div>
+	</body>
+</html>
