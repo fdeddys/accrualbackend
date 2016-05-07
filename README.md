@@ -1,3 +1,3 @@
 # accrual back UI
 
-Pakek angular campur html bootstrap
+Pake angular campur html bootstrap
