@@ -13,7 +13,7 @@ appControllers.controller('bagianController', ['$scope','bagianFactory','growl',
 		direktorat: {
 			id: 0,
 			nama: ""
-		},
+		},		
 		status: "ACTIVE"
 	};
 	$scope.searchNama='';
@@ -54,7 +54,7 @@ appControllers.controller('bagianController', ['$scope','bagianFactory','growl',
 			direktorat: {
 				id: 0,
 				nama: ""
-			},
+			},			
 			status: "ACTIVE"
 		};
 	};

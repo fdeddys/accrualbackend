@@ -6,13 +6,14 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1">	    
 		<title>Accrual Basic ver :00000</title>	
 		
+		<!--script type="text/javascript" src="js/jQuery/jquery-2.1.1.js"></script-->	 
+
 		<script type="text/javascript" src="js/angular/angular.js"></script>
 		<script type="text/javascript" src="js/angular/angular-route.js"></script>
 		<script type="text/javascript" src="js/angular/angular-growl.js"></script>		
 		<script type="text/javascript" src="js/angular/angular-cookies.js"></script>	
 		<script type="text/javascript" src="js/angular/angular-animate.js"></script>		
 
-		<!--script type="text/javascript" src="js/jQuery/jquery-2.1.1.js"></script--> 		 
 		<script type="text/javascript" src="js/angular/ui-bootstrap-tpls.js"></script>
 		<!--script type="text/javascript" src="js/bootstrap/bootstrap.js"></script-->
 
@@ -146,7 +147,15 @@
 								</a>
 							</div>
 
-							<p class="navbar-text navbar-right" style="color:green">Status <a href="#/login" class="navbar-link">{{namaLogin}}  </a>  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  .</p>
+							<p class="navbar-text navbar-right" 
+								style="color:green" 
+								uib-popover="Click untuk logout!" 
+								popover-trigger="mouseenter" 
+								popover-placement="bottom">Status 
+								<a href="#/login" class="navbar-link">{{namaLogin}}  </a>  
+									<span class="glyphicon glyphicon-user" aria-hidden="true">
+									</span>  .
+							</p>
 						</div>
 
 					</nav>

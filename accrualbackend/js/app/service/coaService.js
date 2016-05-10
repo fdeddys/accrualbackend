@@ -69,10 +69,10 @@ appServices.factory('coaHdrFactory', ['$http','$rootScope', function($http,$root
 		});
 	};
 
-	coaHdrFactory.getBagianByKode=function(kode){
+	coaHdrFactory.getBagianById=function(id){
 		return $http({
 			method:'GET',
-			url:urlApi + '/GetBagian/kode/' + kode 
+			url:urlApi + '/GetBagian/id/' + id
 		})
 	};
 

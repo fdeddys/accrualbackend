@@ -1,6 +1,6 @@
 appServices.factory('jurnalDetilFactory', ['$http','$rootScope', function($http,$rootScope){
 	
-	var urlApi = $rootScope.pathServerJSON + '/transaksi/jurnalDetil';
+	var urlApi = $rootScope.pathServerJSON + '/api/transaksi/jurnalDetil';
 	var jurnalDetilFactory={};
 
 	jurnalDetilFactory.getById=function(id){

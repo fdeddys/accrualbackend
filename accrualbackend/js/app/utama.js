@@ -8,9 +8,36 @@ var myApp = angular.module('appAccrual',[
 	'ui.bootstrap'
 ]);
 
+myApp.factory('focus', function($timeout, $window) {
+	return function(id) {
+      // timeout makes sure that it is invoked after any other event has been triggered.
+      // e.g. click events that need to run before the focus or
+      // inputs elements that are in a disabled state but are enabled when those events
+      // are triggered.
+      $timeout(function() {
+      	var element = $window.document.getElementById(id);
+      	if(element)
+      		element.focus();
+      });
+  };
+});
 
+myApp.directive('eventFocus', function(focus) {
+	return function(scope, elem, attr) {
+		elem.on(attr.eventFocus, function() {
+			focus(attr.eventFocusId);
+		});
 
-myApp.run(['$window', '$rootScope', '$location', '$cookieStore', '$http', function($window, $rootScope, $location, $cookieStore, $http){
+      // Removes bound events in the element itself
+      // when the scope is destroyed
+      scope.$on('$destroy', function() {
+      	elem.off(attr.eventFocus);
+      });
+  };
+});
+
+myApp.run(['$window', '$rootScope', '$location', '$cookieStore', '$http', 
+	function($window, $rootScope, $location, $cookieStore, $http){
 
 	// buat hidden menu nya
 	// kalo masuk form LOGIN sembunyikan
@@ -31,6 +58,7 @@ myApp.run(['$window', '$rootScope', '$location', '$cookieStore', '$http', functi
         //$http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
     }
     $rootScope.isLogin = $cookieStore.get('isLogin') || {};
+	
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         // redirect to login page, soalnya $rootScope blm login

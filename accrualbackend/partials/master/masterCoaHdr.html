@@ -28,7 +28,8 @@
 			<tr>
 				<!-- <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("idAccountHdr")'>ID</button></td> -->
 			    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("kodeAccount")'>kode</button></td> 			    
-			    <td width="50%" align="center"> <button class="btn btn-block btn-default" ng-click='urut("namaAccount")'>Nama</button> </td>			    
+			    <td width="40%" align="center"> <button class="btn btn-block btn-default" ng-click='urut("namaAccount")'>Nama</button> </td>			    
+			    <td width="15%" align="center"> <button class="btn btn-block btn-default" ng-click='urut("namaAccount")'>Bagian</button> </td>			    
 			    <td width="15%" colspan="2"><button class="btn btn-block btn-default">Action</button></td>
 			    <!-- <td width="10%"></td> -->
 			</tr>	
@@ -38,6 +39,7 @@
 				<!-- <td>{{coahdr.idAccountHdr}}</td>				 -->
 			    <td>{{coahdr.kodeAccount}}</td> 
 			    <td>{{coahdr.namaAccount}}</td>							    
+			    <td>{{coahdr.kodeBagian}}</td>							    
 			    <td><button type='button' class='btn btn-warning btn-block btn-sm'
 			    	ng-click='ubahCoa(coahdr.idAccountHdr,$index)'
 			    	><span> Edit </span></button></td>
@@ -77,6 +79,13 @@
 		        <label for="namaAccount" class="col-sm-2 control-label">Nama</label>
 		        <div class="col-sm-6">
 		        	<input type='text' class="form-control " id="namaAccount" maxlength='100' ng-model='coaHdr.namaAccount' size="50"  />              
+		        </div>
+		    </div>
+
+		    <div class="form-group form-group-sm">
+		        <label for="kodeBagian" class="col-sm-2 control-label">Kode Bagian</label>
+		        <div class="col-sm-6">
+		        	<input type='text' class="form-control " id="kodeBagian" maxlength='100' ng-model='coaHdr.kodeBagian' size="50"  />              
 		        </div>
 		    </div>
 		    

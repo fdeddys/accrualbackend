@@ -45,11 +45,11 @@
 	};
 
 
-	jurnalHeaderFactory.jurnalHeaderAdd=function(data){
+	jurnalHeaderFactory.jurnalHeaderAdd=function(idUser, data){
 		//alert(urlApi);
 		return $http({
 			method:'POST',
-			url:$rootScope.pathServerJSON +'/transaksi/jurnalHeaderAdd' ,
+			url:urlApi +'/add/idUser/' + idUser ,
 			data:JSON.stringify(data),
 			headers:{'Content-Type':'application/json'}
 		});

@@ -99,11 +99,11 @@
 					<td style="width:55px">bagian</td>
 					<td style="width:230px">Keterangan</td>
 					<td style="width:90px">Jumlah</td>
-					<td style="width:95px">kas/bank</td>
-					<td style="width:95px">Rel</td>
-					<td style="width:170px">cust</td>	
-					<td  style="width:10px"></td>
-					<td  style="width:10px"></td>
+					<td style="width:95px"><span ng-hide="kondisiView || !enableBank">kas/bank</span></td>
+					<td style="width:95px"><span ng-hide="kondisiView || !enableRel">Rel</span></td>
+					<td style="width:170px"><span ng-hide="kondisiView || !enableCust">cust</span></td>	
+					<td style="width:10px"></td>
+					<td style="width:10px"></td>
 					<td ></td>								
 				</tr>
 				<tr>					
@@ -115,7 +115,7 @@
 								ng-model='jurnalDetil.accountDetil' 
 								size="7" 
 								maxlength="15" 
-								typeahead="coaDetil as coaDetil.kodePerkiraan +', ' +coaDetil.namaPerkiraan for coaDetil in coaDetils | filter:$viewValue | limitTo:8" 
+								uib-typeahead="coaDetil as coaDetil.kodePerkiraan +', ' +coaDetil.namaPerkiraan for coaDetil in coaDetils | filter:$viewValue | limitTo:8" 
 								placeholder="kode COA" 
 								ng-blur="myFunct($event)"
 								ng-disabled="kondisiView"
@@ -128,18 +128,19 @@
 					<td><input type='text' ng-model='jurnalDetil.bagian' size="5" maxlength="4" id="idBagian" ng-disabled="kondisiView" required/> </td>
 					<td><input type='text'  ng-model='jurnalDetil.keterangan' id="txtKeterangan" size="40" maxlength="100" ng-disabled="kondisiView" ng-blur="cekLastDesc($event)" required/> </td>
 					<td><input type='number' min="0"  ng-model='jurnalDetil.jumlah' id="txtJumlah" size="11" maxlength="15" ng-disabled="kondisiView" required/> </td>
-					<td><input type='text'  ng-model='jurnalDetil.bank'  size="12" maxlength="10" typeahead="bank as bank.kode for bank in banks | filter:$viewValue | limitTo:8" placeholder="kode Bank" ng-disabled="kondisiView || !enableBank" /> </td>
+					<td><input type='text'  ng-model='jurnalDetil.bank'  size="12" maxlength="10" typeahead="bank as bank.kode for bank in banks | filter:$viewValue | limitTo:8" placeholder="kode Bank" ng-hide="kondisiView || !enableBank" /> </td>
 					<td><input type='text'  
 								ng-model='jurnalDetil.rel'  
 								size="12" 
 								maxlength="10" 
-								ng-disabled="kondisiView || !enableRel"/> </td>
+								ng-hide="kondisiView || !enableRel"/> </td>
 					<td><input 	type='text'  
 								ng-model="jurnalDetil.customer"
-                                typeahead ="customer as customer.kode + ', ' + customer.nama  for customer in 	getCustomer($viewValue) | filter:$viewValue | limitTo:15" 
+                                uib-typeahead ="customer as customer.kode + ', ' + customer.nama  for customer in 	getCustomer($viewValue) "       
                                 size="20" 
                                 maxlength="15" 
-                                ng-disabled="kondisiView || !enableCust"/> </td>
+                                ng-hide="kondisiView || !enableCust"/> </td>
+                                <!-- | filter:$viewValue | limitTo:15  -->
                     <td></td>
 					<td><button class="btn btn-warning btn-block" ng-click='tambahDetil()' ng-disabled="kondisiView">Ok</button></td>
 					<!-- <td><button class="btn btn-default btn-block" ng-click='batalEdit()' ng-disabled="kondisiView || !editDetil">Batal</button></td> -->
@@ -175,26 +176,25 @@
 					<td width="3%" >D/K</button></td>			    
 					<td width="5%" align="center">Kode</button></td>
 					<td width="13%" >Nama</button></td>			    
-				    <td width="5%" align="center">bagian</button></td> 			    			    
+				    <td width="5%" align="center">bagian</button></td> 			 
 				    <td width="20%">Keterangan</button></td>			    
-				    <td width="10%">Jumlah</button></td> 			    			 				    
+				    <td width="10%">Jumlah</button></td> 
 				    <td width="5%">kas/bank</button></td>			    
 				    <td width="5%" align="center">Rel</button></td>			    
 				    <td width="15%" align="center">Cust</button></td>			    
 				    <td width="5%" align="center">DEL</td>
 				    <td width="5%" align="center">Edit</td>
-				</tr>	
-
+				</tr>
 			</thead>
 
 			<tbody>
 				<tr ng-repeat='JurnalDetil in jurnalDetils' >					
 					<td>{{JurnalDetil.dk}}</td>
 					<td>{{JurnalDetil.accountDetil.kodePerkiraan}}</td>
-					<td>{{JurnalDetil.accountDetil.namaPerkiraan}}</td>							    
-					<td>{{JurnalDetil.bagian}}</td>				
+					<td>{{JurnalDetil.accountDetil.namaPerkiraan}}</td>			    
+					<td>{{JurnalDetil.bagian.nama}}</td>				
 				    <td>{{JurnalDetil.keterangan}}</td> 
-				    <td>{{JurnalDetil.debet + JurnalDetil.kredit | currency:""  }}</td>					    <td>{{JurnalDetil.bank.kode}}</td>					
+				    <td>{{JurnalDetil.debet + JurnalDetil.kredit | currency:""  }}</td>	<td>{{JurnalDetil.bank.kode}}</td>					
 				    <td>{{JurnalDetil.rel}}</td>									    
 				    <td>{{JurnalDetil.customer.kode}}</td> 		    				   	
 				    <td><button type='button' class='btn btn-danger btn-block btn-sm'

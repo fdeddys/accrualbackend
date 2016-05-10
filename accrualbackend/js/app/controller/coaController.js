@@ -15,7 +15,8 @@ appControllers.controller('coaHdrController', ['$scope', 'coaHdrFactory','growl'
 	$scope.coaHdr={
 		idAccountHdr: 0,
 		namaAccount: "",
-		kodeAccount: ""
+		kodeAccount: "",
+		kodeBagian :""
 	};
 	$scope.searchNama='';
 	$scope.searchKode='';
@@ -48,6 +49,7 @@ appControllers.controller('coaHdrController', ['$scope', 'coaHdrFactory','growl'
 		$scope.coaHdr.idAccountHdr='[Automatic]';		
 		$scope.coaHdr.kodeAccount='';
 		$scope.coaHdr.namaAccount='';
+		$scope.coaHdr.kodeBagian="";
 	};
 
 	function getAllCoaHdr(halaman){
