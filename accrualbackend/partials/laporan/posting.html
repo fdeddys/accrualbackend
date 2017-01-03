@@ -1,0 +1,114 @@
+<div growl></div> 
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active" ><a>Posting</a></li>  
+</ul>
+<div class='container-fluid' style="background-color:white" >
+	<br>
+	<!-- <form class="form-inline">	
+		<div class="form-group">
+    		<label >No Urut</label>
+    		<input type='text' ng-model='searchNoUrut' ng-change='getAll()' class="form-control" id='cariNoUrut'>
+  	</div>
+		<div class="form-group">
+    		<label for="noVouc">No voucher</label>
+    		<input type='text' ng-model='searchNoVoucher' ng-change='getAll()' class="form-control" id="noVouc" >
+  	</div>	
+    <div class="form-group">
+        <label for="jenisVouc">Jenis voucher</label>
+        <select class="form-control" id="jenisVouc" ng-model='jenisVouch'>
+          <option>PENERIMAAN</option>
+          <option>PEMINDAHAN</option>          
+        </select>
+    </div>  
+  	</form>	 -->  	
+	<form class="form-inline">	
+		<label >Tanggal</label>
+  		<p class="input-group">
+          	<input 	type="text" 
+          			class="form-control" 
+          			uib-datepicker-popup="dd-MMM-yyyy" 
+          			ng-model="tgl1" 
+          			id="tgl1"
+          			size='15%'
+          			is-open="opened" 
+          			datepicker-options="dateOptions" 
+          			date-disabled="disabled(date, mode)" 
+          			ng-required="true" 
+          			close-text="Close" 
+          			alt-input-formats="altInputFormats" />
+          	<span class="input-group-btn">
+            	<button type="button" class="btn btn-info" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          	</span>
+        </p>
+        <label >s/d</label>
+        <p class="input-group">
+          	<input 	type="text" 
+          			class="form-control" 
+          			uib-datepicker-popup="dd-MMM-yyyy" 
+          			ng-model="tgl2" 
+          			id="tgl2"
+          			size='15%'
+          			is-open="opened2" 
+          			datepicker-options="dateOptions" 
+          			date-disabled="disabled(date, mode)" 
+          			ng-required="true" 
+          			close-text="Close" 
+          			alt-input-formats="altInputFormats" />
+          	<span class="input-group-btn">
+            	<button type="button" class="btn btn-info" ng-click="open2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          	</span>
+        </p>
+        <label >Jenis Voucher</label>
+        <p class="input-group" ng-if="!isJurnalPengeluaran">
+            <select class="form-control" id="jenisVouc" ng-model='jenisVouch'>
+              <option>PENERIMAAN</option>
+              <option>PEMINDAHAN</option>          
+            </select>
+        </p>
+        <p class="input-group" ng-if="isJurnalPengeluaran">
+            <select class="form-control" id="jenisVouc" ng-model='jenisVouch'>
+              <option>PENGELUARAN</option>              
+            </select>
+        </p>
+        <p class="input-group">
+          <button class="btn btn-success " size='10%' ng-click='getAll()'  >
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true">    Refresh   
+          </button>          
+        </p>		
+	</form>
+	<br>
+	<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF" >
+		<thead>
+			<tr>
+				<td width="5%" align="center"><button class="btn btn-block btn-default" ng-click='urut("id")'>Id</button></td>
+				<td width="15%" ><button class="btn btn-block btn-default" ng-click='urut("jenisVoucher")'>Jenis</button></td>			    
+			    <td width="15%"><button class="btn btn-block btn-default" ng-click='urut("noUrut")'>No Urut</button></td> 			    			    
+			    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("issueDate")'>Issue Date</button></td>
+			    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("bookingDate")'>Booking Date</button></td>
+			    <td width="15%"><button class="btn btn-block btn-default" ng-click='urut("noVoucher")'>No Voucher</button></td> 
+			    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("statusVoucher")'>Status</button></td>			    
+			    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("user.nama")'>User</button></td>			    
+			    <td width="10%" ></td>			    
+			</tr>	
+		</thead>
+		<tbody>
+			<tr ng-repeat='jurnalHeader in jurnalHeaders | orderBy:orderJurnalHeader ' >
+				<td>{{jurnalHeader.id}}</td>
+				<td>{{jurnalHeader.jenisVoucher}}</td>							    
+				<td>{{jurnalHeader.noUrut}}</td>				
+			    <td>{{jurnalHeader.issueDate | date:'dd-MMM-yyyy'}}</td> 
+			    <td>{{jurnalHeader.bookingDate | date:'dd-MMM-yyyy'}}</td> 
+			    <td>{{jurnalHeader.noVoucher}}</td>					
+			    <td>{{jurnalHeader.statusVoucher}}</td>
+			    <td>{{jurnalHeader.user.nama}}</td> 		    			   
+			    <td><button type='button' class='btn btn-danger btn-block btn-sm'
+			    	ng-click='posting(jurnalHeader.id,jurnalHeader.noVoucher)'
+			    	>Posting</button></td>		    
+			</tr>		
+		</tbody>
+	</table>
+	<div class="container">
+        <uib-pagination total-items="totalItems" items-per-page="itemsPerPage" 
+         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></uib-pagination>
+    </div>
+</div>

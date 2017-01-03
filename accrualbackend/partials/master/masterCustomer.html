@@ -27,28 +27,40 @@
 			<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF"  >
 				<thead>
 					<tr>
-						<td width="5%"><button class="btn btn-block btn-default" ng-click='urut("kode")'>kode</button></td>    
-					    <td width="25%"><button class="btn btn-block btn-default" ng-click='urut("nama")'>Nama</button></td> 
-					    <td width="10%" align="center"><button class="btn btn-block btn-default" >Kota</button></td>
-					    <td width="13%" align="center"><button class="btn btn-block btn-default" >Bank</button></td>
-					    <td width="12%" align="center"><button class="btn btn-block btn-default" >Rek</button></td>
-					    <td width="15%" colspan="2"></td>
+						<td width="5%">
+							<button class="btn btn-block btn-default" ng-click='urut("kode")'>kode</button>
+						</td>    
+					    <td width="25%">
+					    	<button class="btn btn-block btn-default" ng-click='urut("nama")'>Nama</button>
+					    </td> 
+					    <td width="15%" align="center">
+					    	<button class="btn btn-block btn-default" >Kota</button>
+					    </td>
+					    <td width="20%" align="center">
+					    	<button class="btn btn-block btn-default" >Bank</button>
+					    </td>
+					    <td width="15%" align="center">
+					    	<button class="btn btn-block btn-default" >Rek</button>
+					    </td>
+					    <td width="10%" colspan="1"></td>
 					    <!-- <td width="10%"></td> -->
 					</tr>	
 				</thead>
 				<tbody>
 					<tr ng-repeat='customer in customers | orderBy:orderCustomer ' >
-						<td>{{customer.kode}}</td>				
-					    <td>{{customer.nama}}</td> 					    			
-					    <td>{{customer.kota}}</td> 
-					    <td>{{customer.namaBank}}</td>	
+						<td>{{customer.kode | uppercase}}</td>				
+					    <td>{{customer.nama | uppercase}}</td> 					
+					    <td>{{customer.kota | uppercase}}</td> 
+					    <td>{{customer.namaBank | uppercase}}</td>	
 					    <td>{{customer.noRekening}}</td>	
 					    <td><button type='button' class='btn btn-warning btn-block btn-ms'
 					    	ng-click='ubahCustomer(customer.id,customer.nama,$index)'
-					    	><span> Edit </span></button></td>
-					    <td><button type='button' class='btn btn-danger btn-block btn-ms'
+					    	> Edit <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					    	</button>
+					    </td>
+<!-- 					    <td><button type='button' class='btn btn-danger btn-block btn-ms'
 					    	ng-click='hapusCustomer(customer.id,customer.nama)'
-					    	>Delete</button></td>		    
+					    	>Delete</button></td>	 -->	    
 					</tr>		
 				</tbody>
 			</table>
@@ -74,7 +86,7 @@
 				    <div class="form-group form-group-sm">
 				        <label for="kode" class="col-sm-2 control-label">Kode</label>
 				        <div class="col-sm-2">     
-				        	<input type='text' ng-disabled="!editKode"  ng-model='customer.kode' size="20"  maxlength='15' class="form-control " id="kode"/>       
+				        	<input type='text'  ng-model='customer.kode' size="20"  maxlength='15' class="form-control " id="kode"/>       
 				        </div>
 				    </div>
 				    <div class="form-group form-group-sm">
@@ -132,6 +144,12 @@
 				        </div>
 				    </div>
 				    <div class="form-group form-group-sm">
+				        <label for="kotaBank" class="col-sm-2 control-label">Kota</label>
+				        <div class="col-sm-7">     
+				        	<input type='text' id='kotaBank' maxlength='40' ng-model='customer.kotaBank' size="100" class="form-control "  />    
+				        </div>
+				    </div>
+				    <div class="form-group form-group-sm">
 				        <label for="kontakPerson" class="col-sm-2 control-label">kontak Person</label>
 				        <div class="col-sm-6">     
 				        	<input type='text' id='kontakPerson' maxlength='40' ng-model='customer.kontakPerson' size="100" class="form-control "  />    
@@ -160,9 +178,11 @@
 					</thead>			
 					<tbody>
 						<tr>
-							<td><button class="btn btn-warning btn-block" ng-click='proses()'>Ok</button></td>
+							<td><button class="btn btn-danger btn-block" ng-click='proses()'>Ok  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></td>
 							<td></td>					
-							<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close</button></td>
+							<td>
+								<button class="btn btn-success btn-block" ng-click='tutupDetil()'> Close <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></button>
+							</td>
 							<td></td>					
 							<td></td>					
 						</tr>

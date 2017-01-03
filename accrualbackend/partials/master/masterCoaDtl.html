@@ -22,29 +22,30 @@
 		<thead>
 			<tr>
 				<td width="5%" align="center"><button class="btn btn-block btn-default">Kd</button></td>	
-				<td width="15%" align="center"> <button class="btn btn-block btn-default" >Group</button></td>			    
+				<td width="20%" align="center"> <button class="btn btn-block btn-default" >Group</button></td>			    
 				<!-- <td width="5%">Id</td> -->
-			    <td width="5%"><button class="btn btn-block btn-default" ng-click='urut("kodePerkiraan")'>Kd</button></td> 			    			    
+			    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("kodePerkiraan")'>Kd</button></td> 			    			    
 			    <td width="40%" align="center"><button class="btn btn-block btn-default" ng-click='urut("namaPerkiraan")'>nama</button> </td>	
 			    <td width="10%" align="center"><button class="btn btn-block btn-default" ng-click='urut("status")'>Status</button> </td>			    
-			    <td width="15%" colspan="2"><button class="btn btn-block btn-default" >Action</button></td>
+			    <td width="5%" ><button class="btn btn-block btn-default" >Action</button></td>
 			    <!-- <td width="10%"></td> -->
 			</tr>	
 		</thead>
 		<tbody>
 			<tr ng-repeat='coaDtl in coaDtls  ' >
-				<td>{{coaDtl.accountHeader.kodeAccount}}</td>
-				<td>{{coaDtl.accountHeader.namaAccount}}</td>
+				<td>{{coaDtl.accountHeader.kodeAccount | uppercase}}</td>
+				<td>{{coaDtl.accountHeader.namaAccount | uppercase}}</td>
 				<!-- <td>{{coaDtl.idAccountDtl}}</td>				 -->
-			    <td>{{coaDtl.kodePerkiraan}}</td> 
-			    <td>{{coaDtl.namaPerkiraan}}</td>	
+			    <td>{{coaDtl.kodePerkiraan | uppercase}}</td> 
+			    <td>{{coaDtl.namaPerkiraan | uppercase}}</td>	
 			    <td>{{coaDtl.status}}</td>							    
 			    <td><button type='button' class='btn btn-warning btn-block btn-sm'
 			    	ng-click='ubahCoa(coaDtl.idAccountDtl,$index)'
-			    	><span> Edit </span></button></td>
-			    <td><button type='button' class='btn btn-danger btn-block btn-sm'
+			    	> Edit <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+			    </td>
+			    <!-- <td><button type='button' class='btn btn-danger btn-block btn-sm'
 			    	ng-click='hapusCoa(coaDtl.idAccountDtl,coaDtl.namaPerkiraan)'
-			    	>Delete</button></td>		    
+			    	>Delete</button></td>		     -->
 			</tr>		
 		</tbody>
 	</table>
@@ -67,10 +68,10 @@
 		        	<input type='text' class="form-control " ng-disabled='true' id="id" ng-model='coaDtl.idAccountDtl' />              
 		        </div>
 		    </div>
-		    <div class="form-group form-group-sm">
+		    <div class="form-group ">
 		        <label for="kode" class="col-sm-2 control-label">Kode</label>
 		        <div class="col-sm-2">
-		        	<input type='text' class="form-control "  id="kode" ng-model='coaDtl.kodePerkiraan' size="20"   />              
+		        	<input type='text' class="form-control  input-sm"  id="kode" ng-model='coaDtl.kodePerkiraan' size="20"   />              
 		        </div>
 		    </div>
 		    <div class="form-group form-group-sm">
@@ -138,9 +139,11 @@
 			</thead>			
 			<tbody>
 				<tr>
-					<td><button class="btn btn-warning btn-block" ng-click='proses()'>Ok</button></td>
+					<td>
+						<button class="btn btn-warning btn-block" ng-click='proses()'>Ok <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+					</td>
 					<td></td>					
-					<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close</button></td>
+					<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></button></td>
 					<td></td>					
 					<td></td>					
 				</tr>

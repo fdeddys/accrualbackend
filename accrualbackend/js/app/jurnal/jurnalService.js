@@ -34,11 +34,12 @@
 	}
 
 
-	jurnalHeaderFactory.saveHeader=function(jurnalHeader){
+	jurnalHeaderFactory.insertHeader=function(jurnalHeader){
 		//alert(urlApi);
 		return $http({
 			method:'POST',
-			url:urlApi ,
+			// url:urlApi ,
+			url:$rootScope.pathServerJSON +'/transaksi/jurnalHeader/insert/idUser/'+id ,
 			data:JSON.stringify(jurnalHeader),
 			headers:{'Content-Type':'application/json'}
 		});
@@ -49,19 +50,43 @@
 		//alert(urlApi);
 		return $http({
 			method:'POST',
-			url:urlApi +'/add/idUser/' + idUser ,
+			url:urlApi +'/insert/idUser/' + idUser ,
 			data:JSON.stringify(data),
 			headers:{'Content-Type':'application/json'}
 		});
 	};
 
-	jurnalHeaderFactory.approveJurnal=function(id){
+	jurnalHeaderFactory.saveJurnal=function( data){
 		//alert(urlApi);
 		return $http({
-			method:'POST',
-			url:$rootScope.pathServerJSON +'/transaksi/jurnalHeader/approve/id/'+id 
+			method:'POST',			
+			url:urlApi + '/save', 
+			data:JSON.stringify(data),
+			headers:{'Content-Type':'application/json'}
 		});
 	};
+
+	jurnalHeaderFactory.delete=function(id){
+		return $http({
+			method:'DELETE',
+			url:urlApi + '/id/' + id 			
+		})
+	};
+
+	jurnalHeaderFactory.validasiVouchPengeluaran=function(id){
+		return $http({
+			method:'GET',
+			url:urlApi + '/validasiPembayaran/idHdr/' + id 			
+		})
+	};
+
+	jurnalHeaderFactory.getByJenis=function(tgl1, tgl2, jenisVouc, hal, jumlah){
+		return $http({
+			method:'GET',
+			url:urlApi + '/byJenisVoucher/issueDate/'+tgl1+'/'+tgl2+'/jenisVouc/'+jenisVouc+'/page/'+hal+'/'+jumlah
+		})
+	};			
+	
 
 	return jurnalHeaderFactory;
 

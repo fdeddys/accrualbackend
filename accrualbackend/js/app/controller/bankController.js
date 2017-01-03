@@ -1,4 +1,6 @@
-appControllers.controller('bankController',['$scope','bankFactory','growl',function($scope,bankFactory,growl){
+appControllers.controller('bankController',
+	['$scope','bankFactory','growl','focus','$window','$rootScope',	
+	function($scope, bankFactory, growl, focus, $window, $rootScope){
 
 	$scope.statusBanks=['ACTIVE','NONACTIVE'];
 	$scope.tutupGrid=false;
@@ -11,7 +13,8 @@ appControllers.controller('bankController',['$scope','bankFactory','growl',funct
 		nama: "",
 		namaCabangBank: "",
 		status: "",
-		noAccount: ""
+		noAccount: "",
+		kota:""
 	};
 	$scope.searchKode='';
 	$scope.searchNama='';
@@ -49,8 +52,10 @@ appControllers.controller('bankController',['$scope','bankFactory','growl',funct
 			nama: "",
 			namaCabangBank: "",
 			status: "ACTIVE",
-			noAccount: ""
+			noAccount: "",
+			kota: ""
 		};
+		focus('kode');
 	};
 
 	function getAllBank(halaman){
@@ -70,13 +75,13 @@ appControllers.controller('bankController',['$scope','bankFactory','growl',funct
 				});				
 		}else{
 			if($scope.searchKode===''){
-				criteriaKode='-';
+				criteriaKode='--';
 		 	}else{
 		 		criteriaKode=$scope.searchKode;	
 		 	}
 
 		 	if($scope.searchNama===''){
-				criteriaNama='-';
+				criteriaNama='--';
 		 	}else{
 		 		criteriaNama=$scope.searchNama;	
 		 	}
@@ -105,7 +110,8 @@ appControllers.controller('bankController',['$scope','bankFactory','growl',funct
 		bankFactory
 			.getBankById(id)
 			.success(function(data){
-				$scope.bank =data;				
+				$scope.bank =data;	
+				focus('kode');			
 			});
 		
 		//growl.addInfoMessage(urut);
@@ -159,6 +165,7 @@ appControllers.controller('bankController',['$scope','bankFactory','growl',funct
 										$scope.jenisTransaksi=2;
 										$scope.banks.push(data);
 										$scope.bank.id=data.id;
+										$scope.tutupGrid = !$scope.tutupGrid;
 									})
 									.error(function(data){
 										growl.addWarnMessage('Error insert ' + data);		
@@ -172,6 +179,7 @@ appControllers.controller('bankController',['$scope','bankFactory','growl',funct
 					.success(function(data){
 						growl.addInfoMessage('edit success');						
 						$scope.banks[idxUbah]=data;
+						$scope.tutupGrid = !$scope.tutupGrid;
 					})
 					.error(function(data){
 						growl.addWarnMessage('Error Updata ' + data);
@@ -198,5 +206,9 @@ appControllers.controller('bankController',['$scope','bankFactory','growl',funct
 	$scope.tutupDetil=function(){
 		$scope.tutupGrid =!$scope.tutupGrid ;
 	};
+
+	$scope.previewLaporan=function(){
+		 $window.open($rootScope.pathServerJSON + '/api/bank/laporan', '_blank');
+	}
 
 }]);

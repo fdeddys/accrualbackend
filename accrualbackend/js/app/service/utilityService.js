@@ -31,6 +31,14 @@ appServices.factory('userFactory', ['$http','$rootScope', function($http,$rootSc
 		})
 	};
 
+	userFactory.isAdmin = function(nama){
+		return $http({
+			url : urlApi + '/idAdm/' + nama,
+			method : 'GET'
+		})
+	}
+	
+
 	userFactory.insertUser = function(user){
 		return $http({
 			method:'POST',

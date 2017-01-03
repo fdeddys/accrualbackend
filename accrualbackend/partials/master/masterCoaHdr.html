@@ -28,24 +28,27 @@
 			<tr>
 				<!-- <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("idAccountHdr")'>ID</button></td> -->
 			    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("kodeAccount")'>kode</button></td> 			    
-			    <td width="40%" align="center"> <button class="btn btn-block btn-default" ng-click='urut("namaAccount")'>Nama</button> </td>			    
-			    <td width="15%" align="center"> <button class="btn btn-block btn-default" ng-click='urut("namaAccount")'>Bagian</button> </td>			    
-			    <td width="15%" colspan="2"><button class="btn btn-block btn-default">Action</button></td>
+			    <td width="30%" align="center"> <button class="btn btn-block btn-default" ng-click='urut("namaAccount")'>Nama</button> </td>
+			    <td width="25%" align="center"> <button class="btn btn-block btn-default" ng-click='urut("namaAccount")'>Group</button> </td>
+			    <td width="10%" align="center"> <button class="btn btn-block btn-default" ng-click='urut("namaAccount")'>Bagian</button> </td>	
+			    <td width="5%"><button class="btn btn-block btn-default">Action</button></td>
 			    <!-- <td width="10%"></td> -->
 			</tr>	
 		</thead>
 		<tbody>
-			<tr ng-repeat='coahdr in coaHdrs | orderBy:orderCoa ' >
+			<tr ng-repeat='coahdr in coaHdrs  ' >
 				<!-- <td>{{coahdr.idAccountHdr}}</td>				 -->
-			    <td>{{coahdr.kodeAccount}}</td> 
-			    <td>{{coahdr.namaAccount}}</td>							    
+			    <td>{{coahdr.kodeAccount | uppercase}}</td> 
+			    <td>{{coahdr.namaAccount | uppercase}}</td>
+			    <td>{{coahdr.groupAccount | uppercase}}</td>	
 			    <td>{{coahdr.kodeBagian}}</td>							    
 			    <td><button type='button' class='btn btn-warning btn-block btn-sm'
 			    	ng-click='ubahCoa(coahdr.idAccountHdr,$index)'
-			    	><span> Edit </span></button></td>
-			    <td><button type='button' class='btn btn-danger btn-block btn-sm'
+			    	> Edit <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+			    </td>
+<!-- 			    <td><button type='button' class='btn btn-danger btn-block btn-sm'
 			    	ng-click='hapusCoa(coahdr.idAccountHdr,coahdr.namaAccount)'
-			    	>Delete</button></td>		    
+			    	>Delete</button></td>	 -->	    
 			</tr>		
 		</tbody>
 	</table>
@@ -85,10 +88,15 @@
 		    <div class="form-group form-group-sm">
 		        <label for="kodeBagian" class="col-sm-2 control-label">Kode Bagian</label>
 		        <div class="col-sm-6">
-		        	<input type='text' class="form-control " id="kodeBagian" maxlength='100' ng-model='coaHdr.kodeBagian' size="50"  />              
+		        	<input type='text' class="form-control " id="kodeBagian" maxlength='100' ng-model='coaHdr.kodeBagian' size="50"  />
 		        </div>
 		    </div>
-		    
+		    <div class="form-group form-group-sm">
+		        <label for="groupAccount" class="col-sm-2 control-label">group</label>
+		        <div class="col-sm-2">
+		        	<select ng-model="coaHdr.groupAccount" ng-options="groupAccount as groupAccount for groupAccount in groupAccounts " class="form-control " id="groupAccount"></select>
+		        </div>
+		    </div>
 
 		</form>		
 			
@@ -105,9 +113,12 @@
 			</thead>			
 			<tbody>
 				<tr>
-					<td><button class="btn btn-warning btn-block" ng-click='proses()'>Ok</button></td>
+					<td><button class="btn btn-primary btn-block" ng-click='proses()'>Ok <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></td>
 					<td></td>					
-					<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close</button></td>
+					<td>
+						<button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+						</button>
+					</td>
 					<td></td>					
 					<td></td>					
 				</tr>

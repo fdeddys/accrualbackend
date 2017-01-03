@@ -24,6 +24,13 @@ appServices.factory('direktoratFactory', ['$http','$rootScope', function($http,$
 		});
 	}
 
+	direktoratFactory.isKodeDirektoratAda=function(kode){
+		return $http({
+			method:'GET',
+			url:urlApi+'/isKodeExist/'+kode
+		});
+	}
+
 	direktoratFactory.insertDirektorat =function (direktorat){
 		// var direktoratData={
 		// 	'direktorat':direktorat,

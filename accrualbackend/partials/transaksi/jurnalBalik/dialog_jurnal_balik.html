@@ -1,0 +1,58 @@
+<div class="modal-header" id="myModal" >
+	<h2 class="modal-title" style="color:SteelBlue">Jurnal Balik</h2>
+</div>
+<div class="modal-body" style="background-color:#D6EBFF; ">
+
+
+	<table  class="table table-bordered table-striped table-condensed table-hover" border="2px" style="background-color:white" >	
+		<tbody>
+			<tr >	
+				<td><p>{{jurnalDebet.accountDetil.kodePerkiraan}}</p></td>
+				<td><p>{{jurnalDebet.accountDetil.namaPerkiraan}}</p></td>
+				<td><input 	
+						type='text'  
+						ng-model='bankPilih'  
+						size="25" 
+						maxlength="10" 
+						uib-typeahead="bank as bank.kode for bank in banks | filter:$viewValue | limitTo:8" 
+						placeholder="isi kode Bank" 
+						id="kodeBank" /></td>			    			   
+			</tr>				
+		</tbody>
+	</table>
+	<hr>
+	<table  class="table table-bordered table-striped table-condensed table-hover" border="2px" style="background-color:white" >
+		<thead>
+			<tr>
+				<td width="10%"  align="center">Kode</td>
+				<td width="20%" >Nama</td>			    
+			    <td width="25%" >Keterangan</td>			    
+			    <td width="10%" >Jumlah</td> 
+			    <td width="5%"  >kas/bank</td>			    
+			    <td width="5%"  align="center">Rel</td>			    
+			    <td width="15%" align="center">Cust</td>			    
+			    <td width="10%"  align="center">Action</td>				    
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat='JurnalDetil in jurnalDetils' >	
+				<td>{{JurnalDetil.accountDetil.kodePerkiraan}}</td>
+				<td>
+					{{JurnalDetil.accountDetil.namaPerkiraan}}
+				</td>			    
+			    <td>{{JurnalDetil.keterangan}}</td> 
+			    <td>{{JurnalDetil.debet + JurnalDetil.kredit | number  }}</td>	<td>{{JurnalDetil.bank.kode}}</td>					
+			    <td>{{JurnalDetil.rel}}</td>		
+			    <td>{{JurnalDetil.customer.kode}}</td> 		   
+			    <td><button type='button' class='btn btn-success btn-block'
+			    	ng-click='prosesBalik(JurnalDetil.id)'
+			    	>Proses</button>
+			    </td>		 	 
+			</tr>		
+		</tbody>
+	</table>
+	
+</div>
+<div class="modal-footer">
+	<button class="btn btn-danger " style='width:10em' ng-click="ok()">OK</button>
+</div>

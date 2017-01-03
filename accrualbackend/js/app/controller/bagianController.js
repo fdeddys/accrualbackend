@@ -1,4 +1,5 @@
-appControllers.controller('bagianController', ['$scope','bagianFactory','growl','direktoratFactory', function($scope, bagianFactory, growl, direktoratFactory){
+appControllers.controller('bagianController', ['$scope','bagianFactory','growl','direktoratFactory', '$window', '$rootScope','focus',
+	function($scope, bagianFactory, growl, direktoratFactory, $window, $rootScope, focus){
 	var idx=0;
 
 	$scope.statusBagians=['ACTIVE','NONACTIVE'];
@@ -44,6 +45,7 @@ appControllers.controller('bagianController', ['$scope','bagianFactory','growl',
 
 	
 	$scope.tambahBagian=function(){
+		focus(nama);
 		$scope.jenisTransaksi=1;
 		$scope.tutupGrid = !$scope.tutupGrid;
 		$scope.classForm = 'formTambah';		
@@ -57,6 +59,7 @@ appControllers.controller('bagianController', ['$scope','bagianFactory','growl',
 			},			
 			status: "ACTIVE"
 		};
+		focus('kode');
 	};
 
 	function getAllBagian(halaman){
@@ -113,7 +116,8 @@ appControllers.controller('bagianController', ['$scope','bagianFactory','growl',
 		bagianFactory
 			.getBagianById(id)
 			.success(function(data){
-				$scope.bagian =data;				
+				$scope.bagian =data;
+				focus('kode');				
 			})
 			.error(function(data){
 				growl.addWarnMessage("Error loading get by id ",{ttl:4000})
@@ -140,16 +144,25 @@ appControllers.controller('bagianController', ['$scope','bagianFactory','growl',
 			case 1:
 				$scope.bagian.id='';
 				bagianFactory
-					.insertBagian($scope.bagian)
+					.isKodeBagianSudahAda($scope.bagian.kode)
 					.success(function(data){
-						growl.addInfoMessage('insert success ' + data );
-						// $scope.jenisTransaksi=2;
-						$scope.bagian.id=data.id;
-						$scope.bagians.push($scope.bagian) ;
-						$scope.tutupGrid= !$scope.tutupGrid;
-					})
-					.error(function(data){
-						growl.addWarnMessage('Error insert ' + data);		
+						if(data==true){
+							growl.addWarnMessage("kode bagian sudah ada !");
+						}else{
+							bagianFactory
+								.insertBagian($scope.bagian)
+								.success(function(data){
+									growl.addInfoMessage('insert success ' + data );
+									// $scope.jenisTransaksi=2;
+									$scope.bagian.id=data.id;
+									$scope.bagians.push($scope.bagian) ;
+									$scope.tutupGrid= !$scope.tutupGrid;
+								})
+								.error(function(data){
+									growl.addWarnMessage('Error insert ' + data);		
+								})
+							
+						}
 					})
 				
 				break;
@@ -195,5 +208,9 @@ appControllers.controller('bagianController', ['$scope','bagianFactory','growl',
 			    $scope.direktorats = response ;  
   			});
 		};	
+
+	$scope.preview = function(){
+		$window.open($rootScope.pathServerJSON +'/api/bagian/laporan', 'Jurnal');
+	}
 
 }])

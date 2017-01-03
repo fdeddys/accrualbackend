@@ -12,8 +12,7 @@
 		<script type="text/javascript" src="js/angular/angular-route.js"></script>
 		<script type="text/javascript" src="js/angular/angular-growl.js"></script>		
 		<script type="text/javascript" src="js/angular/angular-cookies.js"></script>	
-		<script type="text/javascript" src="js/angular/angular-animate.js"></script>		
-
+		<script type="text/javascript" src="js/angular/angular-animate.js"></script>
 		<script type="text/javascript" src="js/angular/ui-bootstrap-tpls.js"></script>
 		<!--script type="text/javascript" src="js/bootstrap/bootstrap.js"></script-->
 
@@ -24,6 +23,8 @@
 		<script type="text/javascript" src="js/app/service/transaksiService.js"></script>		
 		<script type="text/javascript" src="js/app/service/serviceAuth.js"></script>
 		<script type="text/javascript" src="js/app/service/utilityService.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/bukuBesarTrial/bukuBesarTrialService.js"></script>
+		
 		<!-- Master Service -->
 		<script type="text/javascript" src="js/app/service/bagianService.js"></script>
 		<script type="text/javascript" src="js/app/service/bankService.js"></script>
@@ -34,7 +35,10 @@
 		
 		<!-- CONTROLLER -->
 		<script type="text/javascript" src="js/app/controller/utamaController.js"></script>					
-		<script type="text/javascript" src="js/app/controller/utilityController.js"></script>				
+		<script type="text/javascript" src="js/app/controller/utilityController.js"></script>	
+		<script type="text/javascript" src="js/app/controller/loginController.js"></script>	
+		<script type="text/javascript" src="partials/dialog/dialog_confirm.js"></script>	
+
 		<!-- Master Controller -->
 		<script type="text/javascript" src="js/app/controller/bankController.js"></script>
 		<script type="text/javascript" src="js/app/controller/bagianController.js"></script>
@@ -49,15 +53,31 @@
 		<!-- Jurnal  -->
 		<script type="text/javascript" src="js/app/jurnal/jurnalService.js"></script>
 		<script type="text/javascript" src="js/app/jurnal/jurnalController.js"></script>
-		<script type="text/javascript" src="js/app/jurnal/jurnalDetilService.js"></script>
-		<script type="text/javascript" src="js/app/jurnal/jurnalDetilController.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/jurnalDetil/jurnalDetilService.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/jurnalDetil/jurnalDetilController.js"></script>
 		<script type="text/javascript" src="js/app/jurnal/jurnalBalikService.js"></script>
-		<script type="text/javascript" src="js/app/jurnal/jurnalBalikController.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/jurnalBalik/jurnal_balik_controller.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/bukuBesarTrial/bukuBesarTrialController.js"></script>
 
 		<!-- ISI BOOKING DATE -->
-		<script type="text/javascript" src="js/app/jurnal/isiBookingController.js"></script>
-		<script type="text/javascript" src="js/app/jurnal/isiBookingService.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/isiBooking/isiBookingController.js"></script>
+		<script type="text/javascript" src="js/app/jurnal/isiBooking/isiBookingService.js"></script>
 
+		<!-- BUKU BESAR -->
+		<script type="text/javascript" src="js/app/laporan/bukuBesarService.js"></script>
+		<script type="text/javascript" src="js/app/laporan/bukuBesarController.js"></script>
+
+		<!-- KEUANGAN -->
+		<script type="text/javascript" src="js/app/keuangan/suratTransferService.js"></script>
+		<script type="text/javascript" src="js/app/keuangan/suratTransferController.js"></script>
+		<script type="text/javascript" src="js/app/keuangan/suratTransferDetilController.js"></script>
+		
+		<!--  TUTUP BULAN -->
+		<script type="text/javascript" src="js/app/laporan/postingController.js"></script>
+		<script type="text/javascript" src="js/app/laporan/tutupBulan/tutupBulanController.js"></script>
+		
+		<!--  DIALOG -->
+		<script type="text/javascript" src="partials/dialog/dialogTarikJurnalSuratTransferController.js"></script>
  		<!-- PRINTING -->
  		<script type="text/javascript" src="partials/printing/jurnalPrintingController.js"></script>
 
@@ -191,9 +211,26 @@
 			      		</uib-accordion-heading>
 			      			<ul class="nav nav-pills nav-stacked ">
 							  	<li role="presentation"><a href="#/transaksiJurnalHeader">Jurnal</a></li>
+							  	<li role="presentation"><a href="#/posting/false">Post. Penerimaan /Pemindahan</a></li>
+							  	<li role="presentation"><a href="#/posting/true">Post. Pengeluaran</a></li>
+							  	<li role="presentation"><a href="#/posting">Batal Posting</a></li>
+							  	<li role="presentation"><a href="#/posting">Delete Jurnal</a></li>
+							  	<li role="presentation"><a href="#/bbTrial">Buku Besar Trial</a></li>							  	
+							</ul>
+			    	</uib-accordion-group>
+
+					<uib-accordion-group panel-class="panel-info" is-disabled="!isLogin" style="font-size:10px;">
+			      		<uib-accordion-heading >
+			      		<p style="font-size:13px;">
+			        		Keuangan <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+			        	</p>
+			      		</uib-accordion-heading>
+			      			<ul class="nav nav-pills nav-stacked ">
+							  	<li role="presentation"><a href="#/suratTransfer">Surat Transfer</a></li>
 							  	<li role="presentation"><a href="#/inputBooking">Input Booking</a></li>							  	
 							</ul>
 			    	</uib-accordion-group>
+
 			    	<uib-accordion-group panel-class="panel-warning" is-disabled="!isLogin" style="font-size:10px;">
 			      		<uib-accordion-heading >
 			      		<p style="font-size:13px;">
@@ -201,7 +238,8 @@
 			        	</p>
 			      		</uib-accordion-heading>
 			      			<ul class="nav nav-pills nav-stacked ">
-			      				<li role="presentation"><a href="#/tutupBulan/true">Tutup Bulan</a></li>
+			      				
+			      				<li role="presentation"><a href="#/tutupBulan">Tutup Bulan</a></li>
 			      				<li role="presentation"><a href="#/tutupBulan/false">Buka Bulan</a></li>
 							  	<li role="presentation"><a href="#/neraca">Neraca</a></li>
 							  	<li role="presentation"><a href="#/bukuBesar">Buku Besar</a></li>
@@ -214,7 +252,7 @@
 			        	</p>
 			      		</uib-accordion-heading>
 			      			<ul class="nav nav-pills nav-stacked ">
-			      				<li role="presentation"><a href="#/masterUser">User</a></li>
+			      				<li role="presentation" ng-hide="!visibleUser"><a href="#/masterUser">User</a></li>
 			      				<li role="presentation"><a href="#/config">Config</a></li>
 			      				<li role="presentation" ng-click="keluar()"><a href="">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
 							</ul> 

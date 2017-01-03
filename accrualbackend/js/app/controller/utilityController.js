@@ -1,4 +1,6 @@
-appControllers.controller('userController', ['$scope','userFactory','growl','AuthenticationService','Base64', function($scope,userFactory,growl,AuthenticationService,Base64){
+appControllers.controller('userController', 
+	['$scope','userFactory','growl','AuthenticationService','Base64', '$rootScope', '$window',
+	function($scope,userFactory,growl,AuthenticationService,Base64, $rootScope,  $window){
 
 	// index untuk update tampilan abis update ke database, 
 	// biar idak usah narek db lagi ye
@@ -188,4 +190,22 @@ appControllers.controller('userController', ['$scope','userFactory','growl','Aut
 		$scope.tutupGrid = !$scope.tutupGrid;
 	};	
 
+	function cekAuth(){
+		if( $rootScope.xAuth == true ){
+
+		}else{
+			userFactory
+	            .isAdmin($rootScope.globals.currentUser.username)
+	            .success(function(data){
+	                if(data==true){
+	                	// its okay
+	                }else{
+	                	$window.location ="#/login";
+	                }
+	            })
+			
+		}
+	}
+
+	cekAuth();
 }])

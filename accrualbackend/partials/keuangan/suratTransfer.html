@@ -1,0 +1,99 @@
+<div growl></div> 
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active" ><a>Daftar</a></li>
+  <li role="presentation"><a href="#/suratTransferDetil/new"> Detil</a></li>  
+</ul>
+<div class='container-fluid' uib-collapse="tutupGrid" style="background-color:white" >
+  	<br>
+	<form class="form-inline">	
+		<label >Tanggal</label>
+  		<p class="input-group">
+          	<input 	type="text" 
+          			class="form-control" 
+          			uib-datepicker-popup="dd-MMM-yyyy"
+          			ng-model="tgl1" 
+          			id="tgl1"
+          			size='15%'
+          			is-open="opened" 
+          			datepicker-options="dateOptions" 
+          			date-disabled="disabled(date, mode)" 
+          			ng-required="true" 
+          			close-text="Close" 
+          			alt-input-formats="altInputFormats" />
+          	<span class="input-group-btn">
+            	<button type="button" class="btn btn-info" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          	</span>
+        </p>
+        <label >s/d</label>
+        <p class="input-group">
+          	<input 	type="text" 
+          			class="form-control" 
+          			uib-datepicker-popup="dd-MMM-yyyy"
+          			ng-model="tgl2" 
+          			id="tgl2"
+          			size='15%'
+          			is-open="opened2" 
+          			datepicker-options="dateOptions" 
+          			date-disabled="disabled(date, mode)" 
+          			ng-required="true" 
+          			close-text="Close" 
+          			alt-input-formats="altInputFormats" />
+          	<span class="input-group-btn">
+            	<button type="button" class="btn btn-info" ng-click="open2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          	</span>
+        </p>
+        <div class="form-group">
+    		<label >No Approve</label>
+    		<input type='text' ng-model='searchNoApprove' ng-change='getAll()' class="form-control" id='searchNoApprove'>
+  		</div>
+		<!-- <label >Status</label>
+		<select ng-model="cariStatus" ng-options="statusVoucher as statusVoucher for statusVoucher in statusVouchers" ></select> -->
+		<button class="btn btn-success " size='10%' ng-click='getAll()'  >
+			<span class="glyphicon glyphicon-refresh" aria-hidden="true">    Refresh   
+		</button>
+		<br>		
+	</form>
+	<br>
+	<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF">
+		<thead>
+			<tr>														
+			    <td width="30%"><button class="btn btn-block btn-default" >Bank</button></td> 			
+			    <td width="10%"><button class="btn btn-block btn-default" >Tanggal</button></td>
+			    <td width="10%"><button class="btn btn-block btn-default" >No Approve</button></td>
+          <td width="10%"><button class="btn btn-block btn-default" >No Cek</button></td>
+			    <td width="15%"><button class="btn btn-block btn-default" >Approve</button></td>
+			    <td width="10%"><button class="btn btn-block btn-default" >total</button></td>
+			    <td width="15%"><button class="btn btn-block btn-default" >User</button></td>
+			</tr>	
+		</thead>
+		<tbody >
+			<tr ng-repeat='suratTransfer in suratTransfers '>      
+				  <td height="50px;" >
+            <a href="#/suratTransferDetil/{{suratTransfer.id}}">{{suratTransfer.bank.nama}}</a>     
+          </td>          
+			    <td>
+            <a href="#/suratTransferDetil/{{suratTransfer.id}}">
+            {{suratTransfer.tglSurat | date:'dd-MMM-yyyy'}}
+            </a>
+          </td> 
+			    <td>{{suratTransfer.noApprove }}</td> 
+          <td>{{suratTransfer.noCek }}</td> 
+			    <td>{{suratTransfer.isApprove}}</td>					
+			    <td>{{suratTransfer.total}}</td>
+			    <td>{{suratTransfer.userUpdate}}</td> 
+
+			</tr>		
+		</tbody>
+	</table>
+	<div class="container">
+        <uib-pagination 
+        	total-items="totalItems" 
+        	items-per-page="itemsPerPage" 
+         	ng-model="currentPage" 
+         	ng-change="pageChanged()" 
+         	max-size="10" 
+         	boundary-links="true" 
+         	rotate="false">
+        </uib-pagination>
+    </div>
+</div>

@@ -1,5 +1,6 @@
-appControllers.controller('jurnalController', ['$scope','jurnalHeaderFactory','growl','$filter','statusVoucherFactory','$rootScope',
-	function($scope, jurnalHeaderFactory, growl, $filter, statusVoucherFactory,$rootScope){
+appControllers.controller('jurnalController', 
+	['$scope','jurnalHeaderFactory','growl','$filter','statusVoucherFactory','$rootScope','focus','$uibModal',
+	function($scope, jurnalHeaderFactory, growl, $filter, statusVoucherFactory,$rootScope, focus, $uibModal){
 	
 	var userIdLogin;
 
@@ -17,13 +18,14 @@ appControllers.controller('jurnalController', ['$scope','jurnalHeaderFactory','g
 	$scope.searchNoUrut='';
 	$scope.searchNoVoucher='';
 
+
 	// untuk pencarian pakek status voucher
 	$scope.statusVouchers=[];
 	$scope.cariStatus='ALL';
 
 	// Paging
 	$scope.totalItems;
-	$scope.itemsPerPage= 12;
+	$scope.itemsPerPage= 8;
 	$scope.currentPage = 1;
 
   	$scope.pageChanged=function(){
@@ -65,10 +67,10 @@ appControllers.controller('jurnalController', ['$scope','jurnalHeaderFactory','g
 		//var vTglSuratMasuk = $filter('date')($scope.tglSuratMasuk,'yyyy-MM-dd');
 		var vTgl1 = $filter('date')($scope.tgl1,'yyyy-MM-dd');
 		var vTgl2 = $filter('date')($scope.tgl2,'yyyy-MM-dd');
-
+		var idUser = $rootScope.globals.currentUser.authdata;
 		if($scope.searchNoUrut===''  && $scope.searchNoVoucher==='' ){
 		 	jurnalHeaderFactory
-				.getJurnalHeaderByPageByTgl(2, halaman, $scope.itemsPerPage, vTgl1, vTgl2,$scope.cariStatus) //userIdLogin
+				.getJurnalHeaderByPageByTgl(idUser, halaman, $scope.itemsPerPage, vTgl1, vTgl2,$scope.cariStatus) //userIdLogin
 				.success(function (data){
 				 	$scope.jurnalHeaders = data.content ;
 				 	$scope.totalItems = data.totalElements;
@@ -182,8 +184,54 @@ appControllers.controller('jurnalController', ['$scope','jurnalHeaderFactory','g
 		userIdLogin=$rootScope.globals.currentUser.authdata;
 		getAllJurnalHeader(1);	
 		getAllStatusVoucher();
-
+		focus('cariNoUrut');
 	};
+
+	$scope.hapusFisikVoucher=function(id){
+			
+		var modalInstance = $uibModal.open({
+			templateUrl: 'partials/dialog/dialog_confirm.html',
+			controller: 'DialogConfirmCtrl',
+			size: 'lg',
+		    resolve: 
+		    	{	        
+	        		judul: function () {
+	          			return "id = ["+ id + "]";
+	        		},
+	        		pesan: function () {	        			
+	        			return "Apakah anda akan menghapus data ini ?";		          			
+	        		},
+	        		id: function () {
+	          			return id;
+	        		}
+      			}
+	    });
+
+	    modalInstance
+	    	.result.then(function(idHd){	
+	    		jurnalHeaderFactory
+	    			.delete(idHd)
+	    			.then(function(response){
+	    				// var dt ={
+	    				// 	hasil:""
+	    				// };
+	    				// dt=data.data;
+	    				// growl.addInfoMessage(dt.hasil);
+						
+						growl.addInfoMessage(response.data.hasil);	
+						getAllJurnalHeader($scope.currentPage); 						
+	    				//console.log(data.data);
+	    				// if(data=='OK'){
+		    			// 	growl.addInfoMessage("proses finished !!" );		    		    					    					
+	    				// }else{
+	    					
+	    				// }
+	    			})
+	    	},function(pesan){
+	    		growl.addInfoMessage("form canceled");
+	    	})
+
+	}
 
 	startModule();	
 

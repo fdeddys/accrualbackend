@@ -4,8 +4,9 @@
 
 
 
-appControllers.controller('coaHdrController', ['$scope', 'coaHdrFactory','growl','$window','$rootScope',
-	function($scope,coaHdrFactory,growl, $window, $rootScope){
+appControllers.controller('coaHdrController', 
+	['$scope', 'coaHdrFactory','growl','$window','$rootScope','focus',
+	function($scope,coaHdrFactory,growl, $window, $rootScope, focus){
 
 	var idx=0;
 	$scope.tutupGrid=false;
@@ -18,6 +19,8 @@ appControllers.controller('coaHdrController', ['$scope', 'coaHdrFactory','growl'
 		kodeAccount: "",
 		kodeBagian :""
 	};
+
+	$scope.groupAccounts=['NERACA','LABARUGI_PENDAPATAN','LABARUGI_BIAYA']
 	$scope.searchNama='';
 	$scope.searchKode='';
 
@@ -50,6 +53,7 @@ appControllers.controller('coaHdrController', ['$scope', 'coaHdrFactory','growl'
 		$scope.coaHdr.kodeAccount='';
 		$scope.coaHdr.namaAccount='';
 		$scope.coaHdr.kodeBagian="";
+		focus('kodeAccount');
 	};
 
 	function getAllCoaHdr(halaman){
@@ -119,7 +123,9 @@ appControllers.controller('coaHdrController', ['$scope', 'coaHdrFactory','growl'
 		coaHdrFactory
 			.getCoaHdrById(id)
 			.success(function(data){
-				$scope.coaHdr =data;				
+				$scope.coaHdr =data;	
+
+				focus('kodeAccount');			
 			})
 			.error(function(data){
 				growl.addWarnMessage("Error loading get by id ",{ttl:4000})
@@ -139,13 +145,14 @@ appControllers.controller('coaHdrController', ['$scope', 'coaHdrFactory','growl'
 	};
 
 	$scope.proses=function(){
+		console.log("jenis transaksi = " +  $scope.jenisTransaksi);
 		switch($scope.jenisTransaksi){
 			case 1:
 
 				coaHdrFactory
 					.isKodeExis($scope.coaHdr.kodeAccount)
 					.success(function(data){
-						if(data==='true'){
+						if(data==true){
 							growl.addWarnMessage('Kode Sudah ada ')
 						}else{
 							$scope.coaHdr.idAccountHdr='';
@@ -199,13 +206,17 @@ appControllers.controller('coaHdrController', ['$scope', 'coaHdrFactory','growl'
 		$scope.tutupGrid = !$scope.tutupGrid;
 	};
 
-	$scope.previewLaporan=function(){
-		 $window.open($rootScope.pathServerJSON + '/laporan/coa', '_blank');
+	$scope.previewLaporan=function(){		 	
+		 $window.open($rootScope.pathServerJSON + '/api/accountDtl/laporan', '_blank');
+	
 	}
 	
 }]);
 
-appControllers.controller('coaDtlController', ['$scope','coaDtlFactory','growl','coaHdrFactory', function($scope, coaDtlFactory, growl,coaHdrFactory){
+appControllers.controller('coaDtlController', 
+	['$scope','coaDtlFactory','growl','coaHdrFactory', 'focus', 
+	function($scope, coaDtlFactory, growl,coaHdrFactory, focus){
+
 	var idx=0;
 	$scope.statusCoaDetils=['ACTIVE','NONACTIVE'];
 	$scope.tipeVouchers=['DEBET','KREDIT'];
@@ -275,8 +286,9 @@ appControllers.controller('coaDtlController', ['$scope','coaDtlFactory','growl',
 			// 	idAccountHdr: 0,
 			// 	namaAccount: "",
 			// 	kodeAccount: ""
-			// }
+			// }			
 		};
+		focus('kode');
 	};
 
 	function getAllCoaDtl(halaman){
@@ -383,7 +395,13 @@ appControllers.controller('coaDtlController', ['$scope','coaDtlFactory','growl',
 		coaDtlFactory
 			.getCoaDtlById(id)
 			.success(function(data){
-				$scope.coaDtl =data;				
+				$scope.coaDtl =data;	
+				if($scope.coaDtl.isDebet){
+					$scope.coaDtl.tipeVoucher='DEBET';
+				}else{
+					$scope.coaDtl.tipeVoucher='KREDIT';
+				}	
+				focus('kode');
 			})
 			.error(function(data){
 				growl.addWarnMessage("Error loading get by id ",{ttl:4000})
@@ -403,13 +421,19 @@ appControllers.controller('coaDtlController', ['$scope','coaDtlFactory','growl',
 	};
 
 	$scope.proses=function(){
+
+		if($scope.coaDtl.tipeVoucher=='DEBET'){
+			$scope.coaDtl.isDebet=true;
+		}else{
+			$scope.coaDtl.isDebet=false;
+		}
+
 		switch($scope.jenisTransaksi){
 			case 1:
-
 				coaDtlFactory
 					.isKodeExis($scope.coaDtl.kodePerkiraan)
 					.success(function(data){
-						if(data==='Y'){
+						if(data==true){
 							growl.addWarnMessage('Kode sudah ada !!')
 						}else{
 							$scope.coaDtl.idAccountDtl='';
@@ -420,6 +444,7 @@ appControllers.controller('coaDtlController', ['$scope','coaDtlFactory','growl',
 									// $scope.jenisTransaksi=2;
 									$scope.coaDtl.idAccountDtl=data.idAccountDtl;
 									getAllCoaDtl(1);
+									$scope.currentPage=1;	
 									$scope.tutupGrid = !$scope.tutupGrid;
 								})
 								.error(function(data){
@@ -471,7 +496,9 @@ appControllers.controller('coaDtlController', ['$scope','coaDtlFactory','growl',
 		    .success(function(response){
 			    $scope.coaHdrs = response.content  ;  
   			});
-		};
+	};
+
+
 
 }]);
 

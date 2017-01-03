@@ -10,11 +10,16 @@
 	<div>
 		Cari Nama  : <input id='idCari' type='text' ng-model='searchNama' ng-change='getAll()' >
 		Cari Kode  : <input id='idCari' type='text' ng-model='searchKode' ng-change='getAll()' >
-		<br><br>	
 		<input type='button' 				
-				class='btn btn-primary btn-block'
+				class='btn btn-primary '
 				ng-click='tambahBank()'				
 				value="  Add New " 
+				style='width:15em; height:3em'				
+				/>
+		<input type='button' 				
+				class='btn btn-sm'
+				ng-click='previewLaporan()'				
+				value="  Preview " 
 				style='width:15em; height:3em'				
 				/>
 	</div>
@@ -24,27 +29,29 @@
 			<tr>
 				<!-- <td width="5%"><button class="btn btn-block btn-default" ng-click='urut("id")'>ID</button>
 				</td>  -->
-				<td width="5%"><button class="btn btn-block btn-default" ng-click='urut("kode")'>Kode</button></td> 			    
-				<td width="35%"><button class="btn btn-block btn-default" ng-click='urut("nama")'>Nama</button></td> 
-				<td width="15%"><button class="btn btn-block btn-default" ng-click='urut("noAccount")'>No Account</button></td> 
+				<td width="10%"><button class="btn btn-block btn-default" ng-click='urut("kode")'>Kode</button></td> 			    
+				<td width="25%"><button class="btn btn-block btn-default" ng-click='urut("nama")'>Nama</button></td> 
+				<td width="20%"><button class="btn btn-block btn-default" ng-click='urut("noAccount")'>No Account</button></td> 
 				<td width="5%"><button class="btn btn-block btn-default" ng-click='urut("Status")'>Status</button></td> 			    
-				<td width="10%" colspan="2"></td>
+				<td width="5%" ></td>
 				<!-- <td width="10%"></td> -->
 			</tr>	
 		</thead>
 		<tbody>
 			<tr ng-repeat='bank in banks | orderBy:orderBank ' >
 				<!-- <td>{{bank.id}}</td>				 -->
-				<td>{{bank.kode}}</td>				
-				<td>{{bank.nama}}</td> 
-				<td>{{bank.noAccount}}</td> 				
+				<td>{{bank.kode | uppercase}}</td>				
+				<td>{{bank.nama | uppercase}}</td> 
+				<td>{{bank.noAccount | uppercase }}</td> 				
 				<td>{{bank.status}}</td> 
-				<td><button type='button' class='btn btn-warning btn-block  btn-xs'
+				<td><button type='button' class='btn btn-warning btn-block  '
 					ng-click='ubahBank(bank.id,$index)'
-					><span> Edit </span></button></td>
-				<td><button type='button' class='btn btn-danger btn-block btn-xs'
+					> Edit <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</button>
+				</td>
+<!-- 				<td><button type='button' class='btn btn-danger btn-block btn-xs'
 					ng-click='hapusBank(bank.id)'
-					>Delete</button></td>		    
+					>Delete</button></td>	 -->	    
 			</tr>		
 		</tbody>
 	</table>
@@ -81,9 +88,16 @@
 		    </div>
 
 			<div class="form-group form-group-sm">
-		        <label for="namaCabang" class="col-sm-2 control-label">Nama Cabang Bank</label>
+		        <label for="namaCabang" class="col-sm-2 control-label">Nama Cabang</label>
 		        <div class="col-sm-6">		        			        	 		
 		        	<input type='text' maxlength='99' ng-model='bank.namaCabangBank' size="100" class="form-control" id ="namaCabang"   />
+		        </div>
+		    </div>
+
+		    <div class="form-group form-group-sm">
+		        <label for="kota" class="col-sm-2 control-label">Kota</label>
+		        <div class="col-sm-6">		        			        	 		
+		        	<input type='text' maxlength='99' ng-model='bank.kota' size="100" class="form-control" id ="kota"   />
 		        </div>
 		    </div>
 
@@ -158,9 +172,9 @@
 			</thead>			
 			<tbody>
 				<tr>
-					<td><button class="btn btn-warning btn-block" ng-click='proses()'>Ok</button></td>
+					<td><button class="btn btn-primary btn-block" ng-click='proses()'>Ok  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></td>
 					<td></td>					
-					<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close</button></td>
+					<td><button class="btn btn-success btn-block" ng-click='tutupDetil()'>Close  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></button></td>
 					<td></td>					
 					<td></td>					
 				</tr>

@@ -1,11 +1,12 @@
-appControllers.controller('customerController',['$scope','customerFactory','growl','$window', '$rootScope',
-	function($scope, customerFactory, growl, $window, $rootScope){
+appControllers.controller('customerController',
+	['$scope','customerFactory','growl','$window', '$rootScope','focus',
+	function($scope, customerFactory, growl, $window, $rootScope, focus){
 		
 	var idx;	  
 	$scope.statusCustomers=['ACTIVE','NONACTIVE'];
 
 	$scope.tutupGrid=false;
-	$scope.editKode=true;
+	
 	$scope.classForm='';
 	$scope.customers=[];
 	$scope.orderCustomer='nama';
@@ -21,7 +22,9 @@ appControllers.controller('customerController',['$scope','customerFactory','grow
 		namaBank: "",
 		noRekening: "",
 		namaCabangBank: "",
-		kontakPerson:""
+		kontakPerson:"",
+		kotaBank:"",
+		isSupplier:0
 	};
 	$scope.search='';
 
@@ -51,9 +54,28 @@ appControllers.controller('customerController',['$scope','customerFactory','grow
 		$scope.tutupGrid = !$scope.tutupGrid;
 		$scope.classForm = 'formTambah';
 		$scope.customer.id='[Automatic]';		
-		$scope.customer.kode='';
-		$scope.customer.nama='';
-		$scope.editKode=true;
+		// $scope.customer.kode='';
+		// $scope.customer.nama='';
+		$scope.customer={
+			id: '[Automatic]',
+			kode: "",
+			nama: "",
+			alamat: "",
+			kota: "",
+			telp: "",
+			fax: "",
+			npwp: "",
+			namaBank: "",
+			noRekening: "",
+			namaCabangBank: "",
+			kontakPerson:"",
+			status:"ACTIVE",
+			kotaBank:"",
+			isSupplier:0
+		};
+		// $scope.statusCustomers='ACTIVE';
+		
+		focus('kode');
 	};
 
 	function getAllCustomer(halaman){
@@ -87,7 +109,7 @@ appControllers.controller('customerController',['$scope','customerFactory','grow
 	};
 
 	$scope.ubahCustomer=function(id,nama,urut){
-		$scope.editKode=false;
+		
 		$scope.jenisTransaksi=2;
 		$scope.tutupGrid = !$scope.tutupGrid;
 		$scope.classForm = 'formUbah';
@@ -95,7 +117,8 @@ appControllers.controller('customerController',['$scope','customerFactory','grow
 			.getCustomerById(id)
 			.success(function(data){
 				$scope.customer =data;	
-				idx=urut;			
+				idx=urut;	
+				focus('kode');		
 				
 			});
 	};
@@ -118,7 +141,7 @@ appControllers.controller('customerController',['$scope','customerFactory','grow
 				customerFactory					
 					.isKodeExis($scope.customer.kode)
 					.success(function(data){						
-						if(data==='true'){
+						if(data==true){
 							growl.addWarnMessage('Kode sudah ada');
 							return 0;
 						}else{

@@ -9,40 +9,46 @@
 <div class='container-fluid' uib-collapse="tutupGrid"  style="background-color:white" >
 	<br>
 	<div>
-		Cari Nama  : <input id='idCari' type='text' ng-model='search' ng-change='getAll()' >
-			
-		<input type='button' 				
-				class='btn btn-primary '
-				ng-click='tambahDirektorat()'				
-				value="  Add New " 
-				style='width:15em; height:3em'				
-				/>
-		<input type='button' 				
+		<label>
+			Cari Nama  : <input id='idCari' type='text' ng-model='search' ng-change='getAll()' >	
+		</label>
+		<input 	type='button' 				
+					class='btn btn-primary '
+					ng-click='tambahDirektorat()'				
+					value="  Add New " 
+					style='width:15em; height:3em'				
+					/>				
+
+		<input 	type='button' 				
 				class='btn '
 				ng-click='previewLaporan()'				
 				value="  preview " 
 				style='width:15em; height:3em'				
-				/>
+			/>
 	</div>
+	
 	<br>
 	<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF"  >
 		<thead>
 			<tr>
-				<td width="10%"><button class="btn btn-block btn-default" ng-click='urut("kode")'>Kode</button></td> <td width="50%"><button class="btn btn-block btn-default" ng-click='urut("nama")'>Nama</button></td> 			    
-				<td width="30%" colspan="2"></td>
+				<td width="10%"><button class="btn btn-block btn-default" ng-click='urut("kode")'>Kode</button></td> <td width="70%"><button class="btn btn-block btn-default" ng-click='urut("nama")'>Nama</button></td> 			    
+				<td width="10%" ></td>
 				<!-- <td width="10%"></td> -->
 			</tr>	
 		</thead>
 		<tbody>
 			<tr ng-repeat='direktorat in direktorats | orderBy:orderDirektorat ' >
-				<td>{{direktorat.kode}}</td>				
-				<td>{{direktorat.nama}}</td> 
+				<td>{{direktorat.kode | uppercase}}</td>				
+				<td>{{direktorat.nama | uppercase}}</td> 
 				<td><button type='button' class='btn btn-warning btn-block btn-sm'
 					ng-click='ubahDirektorat(direktorat.id,direktorat.nama,$index)'
-					><span> Edit </span></button></td>
-				<td><button type='button' class='btn btn-danger btn-block btn-sm'
+					> Edit <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</button>
+				</td>
+				<!-- <td><button type='button' class='btn btn-danger btn-block btn-sm'
 					ng-click='hapusDirektorat(direktorat.id,$index)'
-					>Delete</button></td>		    
+					>Delete</button> -->
+				</td>		    
 			</tr>		
 		</tbody>
 	</table>

@@ -1,0 +1,33 @@
+
+<div growl></div>
+<div class=" panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Tutup Bulan</h3>
+	</div>
+	<div class="panel-body">
+
+		<div class='container-fluid'  >
+			<div>
+				Proses : {{tglBulan.hasil}}
+				<br>
+				<br>				
+				<hr>
+				<div class="row">        
+        			<div class="col-sm-10">
+        				<uib-progressbar class="progress-striped active" max="200" value="nilai" type="warning"><i> Waiting .... </i></uib-progressbar></div>
+   			 	</div>
+				<br>
+				<input 
+					type='button' 				
+					class='btn btn-danger btn-block'
+					ng-click='prosesTutupBulan()'				
+					value="  PROSES TUTUP BULAN " 
+					style='width:30em; height:3em'			
+					ng-disabled="disableButton"
+				/>
+			</div>
+			<br>
+		</div>
+
+	</div>
+</div>

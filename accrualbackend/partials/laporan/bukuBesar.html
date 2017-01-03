@@ -1,0 +1,57 @@
+<div growl></div> 
+
+<div class="panel panel-warning">
+	<div class="panel-heading">
+		<h3 class="panel-title">Buku Besar </h3>
+	</div>
+  	<div class="panel-body">
+		<div class='container-fluid'  >
+			<div>
+				<form class="form-inline">
+					Keterangan : <input type="text"  ng-model="cariKeterangan" id="cari" width="300"  >
+					<input type="button" class="btn btn-success" value="cari" ng-click="getAll()">
+					<input type="button" class="btn btn-info" value="reset" ng-click="resetField()">
+				</form>
+			</div>
+			<br>
+			<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF"  >
+				<thead>
+					<tr>
+						<td width="20%">Account</td>    
+					    <td width="20%">Keterangan</td>    
+					    <td width="10%">rel</td>    
+					    <td width="10%">cust</td>    
+					    <td width="10%">Debet</td>    
+					    <td width="10%">Kredit</td>    
+					    <td width="15%">Total</td>    
+					    <td width="5%">id Trns</td>    
+					</tr>	
+				</thead>
+				<tbody>
+					<tr ng-repeat='bukuBesar in bukuBesars ' >
+						<td><input type="button" class="btn btn-warning btn-sm" value="{{bukuBesar.coaDtl.kodePerkiraan}}" ng-click="ambilKode(bukuBesar.coaDtl.idAccountDtl)" >  -  {{bukuBesar.coaDtl.namaPerkiraan}}</td>
+					    <td>{{bukuBesar.keterangan}}</td> 					
+					    <td>{{bukuBesar.jurnalDetil.rel}}</td> 
+					    <td>{{bukuBesar.jurnalDetil.customer.nama}}</td> 
+					    <td><p class="text-right">
+					    {{bukuBesar.totalDebet |number}}</p></td>
+					    <td><p class="text-right">{{bukuBesar.totalKredit |number}}</p></td> 			
+					    <td><p class="text-right">{{bukuBesar.total_berjalan |number}}</p></td>
+					    <td><button ng-click="preview(bukuBesar.jurnalDetil.jurnalHeader.id)" class="btn btn-danger btn-sm">Preview</button> </td> 	
+					</tr>		
+				</tbody>
+			</table>
+			<div class="row">
+		        <uib-pagination 
+		        	total-items="totalItems" 
+		        	items-per-page="itemsPerPage" 
+		         	ng-model="currentPage" 
+		         	ng-change="pageChanged()" 
+		         	max-size="10" 
+		         	boundary-links="true" 
+		         	rotate="false"></uib-pagination>
+		    </div>
+		</div>
+
+  </div>
+</div>

@@ -8,7 +8,8 @@ var appControllers = angular.module('appControllers',['ui.bootstrap','appService
 });
 
 
-appControllers.controller('menuBarController', ['$scope','$rootScope','$location','$cookieStore','userFactory', '$window',
+appControllers.controller('menuBarController', 
+    ['$scope','$rootScope','$location','$cookieStore','userFactory', '$window',
     function($scope,$rootScope,$location,$cookieStore,userFactory,$window){
     
     
@@ -20,7 +21,8 @@ appControllers.controller('menuBarController', ['$scope','$rootScope','$location
     $scope.namaLogin="Sign in as ";
     $scope.statusOption={ 
         open:false
-    }
+    };
+    $scope.visibleUser=true;
 
     $scope.$watch('isLogin',function(newVal,oldVal, scope){
         //console.log("is login " + oldVal + '  berubah  ' + newVal ); 
@@ -28,6 +30,12 @@ appControllers.controller('menuBarController', ['$scope','$rootScope','$location
             //alert($rootScope.globals.currentUser.username);
             $scope.namaLogin= "Login as [" + $rootScope.globals.currentUser.username + "]";                
             //$scope.namaLogin=$cookieStore.globals.currentUser.username;                
+            userFactory
+                .isAdmin($rootScope.globals.currentUser.username)
+                .success(function(data){
+                    $scope.visibleUser=data;                    
+                })
+            
         }else{
             $scope.namaLogin="Logout ";
         }
@@ -39,7 +47,7 @@ appControllers.controller('menuBarController', ['$scope','$rootScope','$location
     $scope.keluar=function(){
         $scope.statusOption.open=false;
         //$location.path('#/login');
-        $window.location = "#/login";
+        $window.location = "#/bukuBesar";
     }
 
     //var isAlreadyLogin = $cookieStore.get('isLogin');
@@ -68,65 +76,4 @@ appControllers.controller('menuBarController', ['$scope','$rootScope','$location
 
 }])
 
-appControllers.controller('index2Controller', ['$scope','growl','AuthenticationService','$location','$rootScope','userFactory', function($scope,growl,AuthenticationService,$location,$rootScope,userFactory){
-	
-	$scope.userId='';
-	$scope.password='';
-	AuthenticationService.ClearCredentials();
-    $rootScope.isLogin=false;
-    
-	// $rootScope.isLogin=false;
-	$scope.login = function () {        
-		
-        // AuthenticationService.Login($scope.userId, $scope.password, function (response) {
-        //     if (response.success) {
-        //         AuthenticationService.SetCredentials($scope.userId, $scope.password);
-        //         //alert('direct')      
-        //         $rootScope.isLogin=true;          
-        //         $location.path('#/');
-        //     } else {
-        //     	//alert('error login');                
-        //     	growl.addErrorMessage('error login');
-        //         // $scope.error = response.message;                
-        //     }
-        // });
-
-        // AuthenticationService.SetCredentials(0, 'testing');
-        // $rootScope.isLogin=true;          
-        // $location.path('#/'); 
-        
-        // return true;
-
-        AuthenticationService
-            .loginAuth($scope.userId, $scope.password)
-            .success(function(data){
-                growl.addWarnMessage(data);
-                //  alert('isi = ['+data+']');
-                if ( data==true) {
-                    var idUser=0 ; 
-                    userFactory
-                        .getIdByUserName($scope.userId)
-                        .success(function(data){
-                            // idUser=data;
-                            AuthenticationService.SetCredentials($scope.userId, data);
-                           //alert('direct')      
-                            $rootScope.isLogin=true;          
-                            $location.path('#/'); 
-                            //$scope.parent.isLoginMenu=true;                           
-                        });
-                    
-                } else {
-                    //alert('error login');                
-                    growl.addErrorMessage('Invalid user or password ');
-                    // $scope.error = response.message;                
-                }    
-            })
-            .error(function(data){
-                growl.addWarnMessage('Error get Auth from Server !' );       
-            })
-
-    };
-
-	
-}])
 

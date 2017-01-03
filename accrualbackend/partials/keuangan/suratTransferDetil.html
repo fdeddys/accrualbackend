@@ -1,0 +1,186 @@
+<div growl></div> 
+<ul class="nav nav-tabs">
+  <li role="presentation" ><a href="#/suratTransfer">Daftar</a></li>
+  <li role="presentation" class="active"><a> Detil</a></li>  
+</ul>
+
+<div class='container-fluid' style="background-color:white" >	
+	<br>
+		<div  class='container-fluid'  >		
+			<button class="btn btn-primary " ng-disabled="kondisiView  " style="width:125px" ng-click='transaksiBaru()'>Transaksi Baru</button>
+			<button class="btn btn-warning " ng-disabled="kondisiView  " style="width:125px" ng-click='saveVoucher()'>Simpan</button>
+			<button class="btn btn-danger " 
+					style="width:125px" 
+					ng-click='tarikJurnal()' 
+					ng-disabled="kondisiView  ">Tarik Jurnal <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span></button>
+			<button class="btn btn-success " 
+					ng-disabled="kondisiView  " 
+					style="width:125px" 
+					ng-click='preview()'>Preview
+			</button>
+		</div>	
+	<br>
+	<div class='container-fluid'  style=" background-color:SteelBlue; " >
+		<br>
+			<table border="0" style=" background-color:SteelBlue;width: 100% ">	
+				<tbody>
+					<tr>
+						<td width="10%" style="color:white" align="left" >No Id</td>	
+						<td width="3%"  align="center" style="color:white">:</td>
+						<td width="35%" style="color:white">		
+							<p class="form-control-static" > {{suratTransferHd.id}}</p> 						
+						</td>
+						<td width="10%" style="color:white">Tanggal</td>
+						<td width="3%" style="color:white" align="center">:</td>
+						<td width="35%">
+							<div >
+							<table>
+								<tr>
+									<td>
+  									<input 	
+  										type="text" 
+  										uib-datepicker-popup="dd-MMM-yyyy" 
+  										ng-model="tglSurat " 
+  										is-open="opened" 
+  										datepicker-options="dateOptions" 
+  										ng-required="true"
+  										close-text="Tutup"
+  										alt-input-formats="dd-MMM-yyyy" 
+  										style='width:95%'
+  									>
+          							</td>
+									<td>
+	    								<button 	
+	    									type="button" 
+	    									class="btn  btn-danger btn-sm" 
+	    									ng-click="open($event)"
+	    									ng-disabled="kondisiView">
+	    									<i class="glyphicon glyphicon-calendar"></i>
+	    								</button>         		
+									</td>
+								</tr>
+							</table>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<!-- <td style="color:white" >Supplier</td>	
+						<td align="center" style="color:white">:</td>
+						<td >
+							<input 
+								type='text' 
+								id="idSupplier" 
+								ng-model='supplierSelected' 
+								uib-typeahead="supplier as supplier.nama  for supplier in getSupplierByNama($viewValue) " 
+								placeholder="ketik nama Supplier" 
+								/> {{supplierSelected.id}}
+						</td>	 -->		
+						<td style="color:white">No Cek</td>
+						<td align="center" style="color:white">:</td>
+						<td >
+							<input 
+								type='text' 								
+								ng-model='suratTransferHd.noCek' 
+								placeholder="noCek" 
+								/>
+						</td>					
+						<td style="color:white">Bank</td>
+						<td align="center" style="color:white">:</td>
+						<td >
+							<select ng-model="bankSelected" 
+									ng-options="bank.nama for bank in banks track by bank.id"
+									id='comboBank' 	
+									ng-disabled="kondisiView " 
+									style='width:60%'     
+									></select>
+						</td>
+					</tr>
+					<tr>
+						<td style="color:white" >No Approve</td>	
+						<td align="center" style="color:white">:</td>
+						<td >
+							<input 
+								type='text' 								
+								ng-model='suratTransferHd.noApprove' 
+								placeholder="ketik no Approve" 
+								/>
+						</td>								
+						<td style="color:white"></td>
+						<td align="center" style="color:white"></td>
+						<td >							
+						</td>
+					</tr>																	
+				</tbody>
+			</table>				
+		<br>
+	</div>
+	
+	<div style="height:280px; background-color:#D6EBFF; overflow-y: auto;"  class='container-fluid'  >
+		<table  class="table table-bordered table-striped table-condensed table-hover" border="2px" style="background-color:white" >
+			<thead>
+				<tr>													
+					<td width="5%" >id</td>			    
+					<td width="20%" >Perkiraan</td>
+					<td width="10%" >Bagian</td>
+					<td width="10%" >No</td>			    
+				    <td width="25%" >Keterangan</td>			    
+				    <td width="10%" >Kredit</td> 			 
+				    <td width="10%" >Issue Date</td> 
+				    <td width="10%">Action</td>	
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr ng-repeat='suratTransferDt in suratTransferDts' >
+					<td>{{suratTransferDt.id}}</td>
+					<td>{{suratTransferDt.jurnalDetil.accountDetil.kodePerkiraan}}-{{suratTransferDt.jurnalDetil.accountDetil.namaPerkiraan}}</td>
+					<td align="center">{{suratTransferDt.jurnalDetil.bagian.nama}}</td>	
+					<td align="center"><a 
+						href="{{ipServer}}/api/transaksi/jurnalDetil/voucher/{{suratTransferDt.jurnalDetil.jurnalHeader.id}}" 
+						target="_blank" >{{suratTransferDt.jurnalDetil.jurnalHeader.noUrut}}</a>
+					</td>
+					<td>{{suratTransferDt.jurnalDetil.keterangan}}</td>	
+				    <td align="right">{{suratTransferDt.jurnalDetil.kredit | number}}</td>
+				    <td>{{suratTransferDt.jurnalDetil.jurnalHeader.issueDate |date:'dd-MMM-yyyy'}}</td>					    	   
+				    <td><button type='button' class='btn btn-danger btn-block btn-xm'
+				    	ng-click='hapusDetil(suratTransferDt.id)' ng-disabled="kondisiView"
+				    	>Del</button>
+				    </td>		 	 
+				</tr>		
+			</tbody>
+		</table>	
+	</div>
+
+	<div class="container-fluid" style="background-color:DarkCyan">
+		<table border="0" style="width:100%; ">
+			<thead>
+				<tr>														
+					<td width="50%" ></td>			    
+				    <td width="25%" ></td> 			    			    
+				    <td width="25%"><</td>			    				    
+				</tr>	
+			</thead>
+			<tbody>
+				<tr >
+					<td>
+						<uib-pagination total-items="totalItems" items-per-page="itemsPerPage" 
+	         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></uib-pagination>	    				
+					</td>
+					<td style="color:white">
+						<br>
+						<p>
+						Total : Rp <span >{{total | currency:""}}</span>
+						</p>
+					</td>			
+					<!-- <td style="color:white">
+						<br>
+						<p>
+						Total Kredit : Rp <span>{{totalKredit | currency:""}}</span>
+						</p>
+					</td>			 -->
+				</tr>				
+			</tbody>
+			
+		</table>
+	</div>	
+</div>

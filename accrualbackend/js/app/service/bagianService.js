@@ -31,6 +31,13 @@ appServices.factory('bagianFactory', ['$http','$rootScope', function($http,$root
 		});
 	}
 
+	bagianFactory.isKodeBagianSudahAda = function(kode){
+		return $http({
+			method:'GET',
+			url:urlApi + '/isKodeExist/' + kode
+		})
+	}
+
 	bagianFactory.getBagianByNamaPage=function(nama, hal, jumlah){
 		return $http({
 			method:'GET',
@@ -60,8 +67,7 @@ appServices.factory('bagianFactory', ['$http','$rootScope', function($http,$root
 			method:'DELETE',
 			url:urlApi + '/id/' + id
 		});
-
-	}
+	};	
 
 	return bagianFactory;
 

@@ -1,5 +1,6 @@
-appControllers.controller('direktoratController', ['$scope','direktoratFactory','growl', '$window','$rootScope',
-	function($scope,direktoratFactory, growl, $window, $rootScope){
+appControllers.controller('direktoratController', 
+	['$scope','direktoratFactory','growl', '$window','$rootScope','focus',
+	function($scope,direktoratFactory, growl, $window, $rootScope, focus){
 	// 
 	var idx=0;
 	$scope.tutupGrid=false;
@@ -32,6 +33,7 @@ appControllers.controller('direktoratController', ['$scope','direktoratFactory',
 		$scope.direktorat.id='[Automatic]';				
 		$scope.direktorat.nama='';
 		$scope.direktorat.kode='';
+		focus('kode');
 	};
 
 	function getAllDirektorat(){
@@ -69,7 +71,8 @@ appControllers.controller('direktoratController', ['$scope','direktoratFactory',
 		direktoratFactory
 			.getDirektoratById(id)
 			.success(function(data){
-				$scope.direktorat =data;				
+				$scope.direktorat =data;
+				focus('kode');				
 			});
 		
 		growl.addInfoMessage(urut);
@@ -94,17 +97,26 @@ appControllers.controller('direktoratController', ['$scope','direktoratFactory',
 		switch($scope.jenisTransaksi){
 			case 1:
 				$scope.direktorat.id='';
+
 				direktoratFactory
-					.insertDirektorat($scope.direktorat)
+					.isKodeDirektoratAda($scope.direktorat.kode)
 					.success(function(data){
-						growl.addInfoMessage('insert success ' + data );
-						$scope.jenisTransaksi=2;
-						$scope.direktorat.id =data.id;
-						$scope.direktorats.push($scope.direktorat);
-						$scope.tutupGrid = !$scope.tutupGrid;
-					})
-					.error(function(data){
-						growl.addWarnMessage('Error insert ' + data);		
+						if(data==true){
+							growl.addWarnMessage("kode sudah ada !!")
+						}else{
+							direktoratFactory
+								.insertDirektorat($scope.direktorat)
+								.success(function(data){
+									growl.addInfoMessage('insert success ' + data );
+									$scope.jenisTransaksi=2;
+									$scope.direktorat.id =data.id;
+									$scope.direktorats.push($scope.direktorat);
+									$scope.tutupGrid = !$scope.tutupGrid;
+								})
+								.error(function(data){
+									growl.addWarnMessage('Error insert ' + data);		
+								})								
+						}
 					})
 				
 				break;
@@ -144,7 +156,7 @@ appControllers.controller('direktoratController', ['$scope','direktoratFactory',
 	};
 
 	$scope.previewLaporan=function(){
-		 $window.open($rootScope.pathServerJSON + '/laporan/direktorat', '_blank');
+		 $window.open($rootScope.pathServerJSON + '/api/direktorat/laporan', '_blank');
 	}
 
 }])

@@ -20,7 +20,7 @@ appServices.factory('AuthenticationService',
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
 
-             var response = { success: username === 'deddy' && password === '123' };
+            var response = { success: username === 'deddy' && password === '1232' };
                 if (!response.success) {
                 	//alert('berhasil login');
                     response.message = 'Username or password is incorrect';

@@ -1,0 +1,152 @@
+<div growl></div> 
+<div class="panel panel-warning">
+	<div class="panel-heading">
+		<h3 class="panel-title">Buku Besar Trial</h3>
+	</div>
+  	<div class="panel-body">
+		<div class='container'  >
+			
+			<form class="form form-horizontal ">
+				<div uib-collapse="!isCollapsed" > 
+					<button 
+						type='button' 
+						class='btn btn-warning'					
+						ng-click='closeCari()'						
+						> Filter <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+					</button>	
+					<br>
+					<br>
+				</div>
+<!-- ng-hide="!isCollapsed" class="well well-sm" style="background-color:whitesmoke" -->
+				<div uib-collapse="isCollapsed" style="background-color:whitesmoke" class="well well-sm"> <!-- END form collapsed -->					
+					<div class="form-group form-group-sm">
+						<label for="idKodeCoa" class="col-sm-2 control-label">Kode COA</label>
+						<div class="col-sm-6">
+				        	<input type='text' 
+									ng-model='cariAcc' 
+									size="15" 
+									maxlength="20" 
+									typeahead-on-select
+									uib-typeahead="coaDetil as coaDetil.kodePerkiraan +', ' +coaDetil.namaPerkiraan for coaDetil in getCoaDtlByKode($viewValue) " 
+									placeholder="isi kode COA" 
+									typeahead-select-on-blur="true"
+									ng-blur="myFunct($event)"
+									id="kodeCoa"
+									class="form-control input-sm"
+									/>  		
+						</div>	   			        
+				    </div>
+				    <div class="form-group form-group-sm">
+						<label for="rel" class="col-sm-2 control-label">Rel</label>
+						<div class="col-sm-4">
+				        	<input type='text' 
+									ng-model='rel' 
+									size="15" 
+									maxlength="20" 	
+									placeholder="isi rel" 
+									id="rel"
+									class="form-control input-sm"
+									/>  		
+						</div>	   			        
+				    </div>
+				    <div class="form-group form-group-sm">
+						<label for="idCust" class="col-sm-2 control-label">Customer</label>
+						<div class="col-sm-8">
+				        	<input 	type='text'  
+									ng-model="cariCust"
+	                                uib-typeahead ="customer as customer.kode + ', ' + customer.nama  for customer in 	getCustomer($viewValue) "
+	                                size="50" 
+	                                maxlength="15"                  
+	                                id="idCust"                                
+	                                placeholder="Isi Kode Customer"
+	                                class="form-control input-sm"/>		
+						</div>	   			        
+				    </div>
+				    <div class="form-group form-group-sm">
+						<label for="idBank" class="col-sm-2 control-label">Bank</label>
+						<div class="col-sm-5">
+				        	<input 	type='text'  
+									ng-model="cariBank"
+	                                uib-typeahead="bank as bank.kode for bank in banks | filter:$viewValue | limitTo:8" 
+	                                size="50" 
+	                                maxlength="15"                  
+	                                id="idBank"                                
+	                                placeholder="Isi Kode Bank"
+	                                class="form-control input-sm"/>		
+						</div>	   			        
+				    </div>
+				<!-- 	Account : <input type="text"  ng-model="cariAcc" id="cari" width="500"  > -->
+	<!-- 				<input type="button" class="btn btn-success" value="cari" ng-click="getAll()">	<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>	 -->
+					<div class="form-group form-group-sm">
+						<label for="idBank" class="col-sm-2 control-label"></label>
+						<div class="col-sm-5">
+							<button 
+								type='button' 
+								class='btn btn-success'					
+								ng-click='getAll()'
+								> Cari <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</button>
+							<button 
+								type='button' 
+								class='btn btn-info'					
+								ng-click='closeCari()'
+								> Close <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+							</button>			
+						</div>	   			        
+				    </div>
+				</div> <!-- END form collapsed -->			
+			</form>					
+			
+			<!-- <div class="container-fluid"> -->
+			<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF"  >
+				<thead>
+					<tr>
+						<td width="10%">Account</td>    
+						<td width="10%">Bookdate</td>    
+					    <td width="10%">No Voucher</td>    
+					    <td width="10%">No Urut</td>    
+					    <td width="20%">Bagian</td>    
+					    <td width="15%">rel</td>    
+					    <td width="20%">cust</td>    
+					    <td width="20%">Penerima</td>    
+					    <td width="10%">cash/bank</td>    
+					    <td width="25%">Keterangan</td>    
+					    <td width="10%">Debet</td>    
+					    <td width="10%">Kredit</td>   
+					    <td width="10%">Total</td>   
+					</tr>	
+				</thead>
+				<tbody>
+					<tr ng-repeat='bukuBesarTrial in bukuBesarTrials ' >
+						<td>{{bukuBesarTrial.coaDtl.kodePerkiraan}}</td>
+					    <td>{{bukuBesarTrial.tglBooking | date:'dd-MMM-yyyy'}}</td> 	
+					    <td>{{bukuBesarTrial.noVoucher}}</td> 
+					    <td>{{bukuBesarTrial.noUrut}}</td> 
+					    <td>{{bukuBesarTrial.bagian.nama}}</td>
+					    <td>{{bukuBesarTrial.rel}}</td>
+					    <td>{{bukuBesarTrial.customer.nama}}</td>
+					    <td>{{bukuBesarTrial.penerima}}</td> 	
+					    <td>{{bukuBesarTrial.bank.nama}}</td>
+					    <td>{{bukuBesarTrial.keterangan}}</td> 	
+					    <td><p class="text-right">
+					    {{bukuBesarTrial.totalDebet |number}}</p></td> 	
+					    <td><p class="text-right">{{bukuBesarTrial.totalKredit |number}}</p></td> 	
+					    <td><p class="text-right">{{bukuBesarTrial.total_berjalan |number}}</p></td> 	
+					</tr>		
+				</tbody>
+			</table>
+			<!-- </div> -->
+			<div class="row">
+		        <uib-pagination 
+		        	total-items="totalItems" 
+		        	items-per-page="itemsPerPage" 
+		         	ng-model="currentPage" 
+		         	ng-change="pageChanged()" 
+		         	max-size="10" 
+		         	boundary-links="true" 
+		         	rotate="false"></uib-pagination>
+		    </div>
+		</div>
+
+  </div>
+</div>

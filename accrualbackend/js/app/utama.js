@@ -79,8 +79,8 @@ myApp.config(['$routeProvider','$locationProvider','growlProvider',function($rou
 			templateUrl:'partials/utama.html'				
 		}).
 		when('/login',{
-			templateUrl:'index2.html',
-			controller:'index2Controller'
+			templateUrl:'login.html',
+			controller:'loginController'
 		}).
 		when('/masterDirektorat',{
 			templateUrl:'partials/master/masterDirektorat.html',
@@ -115,7 +115,7 @@ myApp.config(['$routeProvider','$locationProvider','growlProvider',function($rou
 			controller: 'userController'
 		}).	
 		when('/transaksiJurnalHeader',{
-			templateUrl:'partials/transaksi/masterJurnal.html',
+			templateUrl:'partials/transaksi/jurnal.html',
 			controller: 'jurnalController'
 		}).
 		when('/printJurnal',{
@@ -123,21 +123,45 @@ myApp.config(['$routeProvider','$locationProvider','growlProvider',function($rou
 			controller: 'jurnalPrintingController'
 		}).
 		when('/transaksiJurnalDetil/:idDetil',{
-			templateUrl:'partials/transaksi/detilJurnal.html',
+			templateUrl:'partials/transaksi/jurnalDetil.html',
 			controller: 'jurnalDetilController'
 		}).
 		when('/transaksiJurnalBalik/:idDetil',{
 			templateUrl:'partials/transaksi/jurnalBalik.html',
 			controller: 'jurnalBalikController'
 		}).	
+		when('/suratTransfer',{
+			templateUrl:'partials/keuangan/suratTransfer.html',
+			controller: 'suratTransferController'
+		}).
+		when('/suratTransferDetil/:idHd',{
+			templateUrl:'partials/keuangan/suratTransferDetil.html',
+			controller: 'suratTransferDetilController'
+		}).			
 		when('/inputBooking',{
-			templateUrl:'partials/transaksi/bookingPembayaran.html',
+			templateUrl:'partials/transaksi/isiBooking.html',
 			controller: 'isiBookingController'
 		}).	
 		when('/config',{
 			templateUrl:'partials/Utility/accrualConfig.html',
 			controller: 'accrualConfigController'
+		}).	
+		when('/bukuBesar',{
+			templateUrl:'partials/laporan/bukuBesar.html',			
+			controller: 'bukuBesarController'
+		}).	
+		when('/tutupBulan',{
+			templateUrl:'partials/laporan/tutupBulan.html',
+			controller: 'tutupBulanController'
 		}).				
+		when('/posting/:isJurnalPengeluaran',{
+			templateUrl:'partials/laporan/posting.html',
+			controller: 'postingController'
+		}).	
+		when('/bbTrial',{
+			templateUrl:'partials/transaksi/bukuBesarTrial.html',
+			controller: 'bukuBesarTrialController'
+		}).	
         otherwise({
 			redirectTo:'/'
 		});

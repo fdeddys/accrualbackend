@@ -1,0 +1,45 @@
+<div class="modal-header" id="modalTarikJuralSuratTransfer" >
+	<h2 class="modal-title" style="color:SteelBlue">List Jurnal Pembayaran</h2>
+</div>
+<div class="modal-body" style="background-color:red; ">
+<!-- 	<p ><h5 style="color:white">Daftar Jurnal Pembayaran Bank [{{bank}}]</h5>
+	</p> -->
+	<div style="background-color:#F6CECE; overflow-y: auto;height:345px;"  class='container-fluid'  >
+		<table  class="table table-bordered table-striped table-condensed table-hover" border="2px" style="background-color:white" >
+			<thead>
+				<tr>
+					<td width="5%"  >id</td>			    			
+					<td width="12%" >No Urut</td>			    
+					<td width="13%" >Issue Date</td>
+					<td width="20%" >Customer</td>			  
+				    <td width="25%" >Keterangan</td>			    
+				    <td width="15%" >Total</td> 				    
+				    <td width="10%" >Proses</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat='JurnalDetil in jurnalDetils' >					<td>{{JurnalDetil.jurnalHeader.id}}</td>
+					<td>{{JurnalDetil.jurnalHeader.noUrut}}</td>
+					<!-- //noUrut -->
+					<td>{{JurnalDetil.jurnalHeader.issueDate| date:'dd-MMM-yyyy'}}</td>
+					<td>{{JurnalDetil.customer.nama | uppercase}}</td>			
+				    <td>{{JurnalDetil.keterangan}}</td>
+				    <td>{{JurnalDetil.debet + JurnalDetil.kredit | number  }}</td>
+				    <td><button type='button' class='btn btn-warning btn-block btn-xm'
+				    	ng-click='proses($index,JurnalDetil.id)' ng-disabled="kondisiView"
+				    	>proses <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span></button>
+				    </td>		 	 
+				</tr>		
+			</tbody>
+		</table>	
+	</div>
+	<div class="container-fluid">
+        <uib-pagination total-items="totalItems" items-per-page="itemsPerPage" 
+         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></uib-pagination>
+	</div>
+	
+</div>
+<div class="modal-footer">
+	<button class="btn btn-warning btn-block" ng-click="ok()">OK</button>
+	<!-- <button class="btn btn-warning btn-block" ng-click="cancel()">Cancel</button> -->
+</div>

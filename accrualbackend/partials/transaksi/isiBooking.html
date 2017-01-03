@@ -1,0 +1,271 @@
+<div growl></div> 
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Pengisian Book Date </h3>
+  </div>
+  <div class="panel-body">
+	<div class='container-fluid' collapse="tutupGrid" style="background-color:whitesmoke" >
+		<br>
+		<div class='container-fluid' style="background-color:#CEECF5" >	
+		<br>
+		<form class="form-inline">	
+			<p class="input-group">			
+				<label style="width:100px">Cari no urut </label> 
+					<input 	
+						type='text' 
+						ng-model='searchNoUrut' 
+						ng-change='getAll()' >
+				<label style="width:125px; text-align:center"> Cari no voucher</label>
+					<input 
+						type='text' 
+						ng-model='searchNoVoucher' 
+						ng-change='getAll()' >		
+			</p>	 				
+		</form>
+		<form class="form-inline">	
+			<p class="input-group">
+				<label style="width:100px">Dari  </label> 
+					<input 
+						type="text" 						
+						uib-datepicker-popup="dd-MMM-yyyy" 
+						ng-model="tgl1" 
+						is-open="opened" 
+						datepicker-options="dateOptions" 
+						date-disabled="disabled(date, mode)" 
+						ng-required="true" 
+						id='tgl1'
+						close-text="Tutup" 					
+						size='15%'
+						ng-readonly="true"
+						/>
+						<span class="input-group-btn">
+            				<button type="button" class="btn btn-info" ng-click="open($event)">
+							<i class="glyphicon glyphicon-calendar"></i>
+							</button>
+          				</span>										
+				<label style="width:125px; text-align:center"> s/d  </label> 
+				<!-- <p class="input-group"> -->
+					<input 
+						type="text" 						
+						uib-datepicker-popup="dd-MMM-yyyy" 
+						ng-model="tgl2" 
+						is-open="opened2" 
+						datepicker-options="dateOptions" 
+						date-disabled="disabled(date, mode)" 
+						ng-required="true" 
+						id='tgl2'
+						close-text="Tutup" 					
+						size='15%'
+						ng-readonly="true"
+						/> 
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-info " ng-click="open2($event)">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</button>
+						</span>
+			</p>
+		</form>
+		<form class="form-inline">	
+			<p class="input-group">
+				<label style="width:100px">Status  </label> 
+					<select 
+						ng-model="cariStatus" 
+						ng-options="statusVoucher as statusVoucher for statusVoucher in statusVouchers" >						
+					</select>
+				<label style="width:25px; text-align:left"></label> 
+					<button class="btn btn-danger " size='10%' ng-click='getAll()'  >
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true">    Refresh   </span>
+					</button>
+			</p>
+		</form>
+		</div>
+
+		<table class="table table-bordered table-striped table-condensed table-hover" style="background-color:#D6EBFF" >
+			<thead>
+				<tr>				
+				<!-- -->
+					<td width="5%" align="center"><button class="btn btn-block btn-default" ng-click='urut("id")'>Id</button></td>
+					<td width="12%" ><button class="btn btn-block btn-default" ng-click='urut("jenisVoucher")'>Jenis</button></td>			    
+				    <td width="15%"><button class="btn btn-block btn-default" ng-click='urut("noUrut")'>No Urut</button></td> 			    			    
+				    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("issueDate")'>Issue Date</button></td>
+				    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("bookingDate")'>Booking Date</button></td>
+				    <td width="15%"><button class="btn btn-block btn-default" ng-click='urut("noVoucher")'>No Voucher</button></td> 
+				    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("statusVoucher")'>Status</button></td>			    
+				    <td width="10%"><button class="btn btn-block btn-default" ng-click='urut("user.nama")'>User</button></td>			    
+				    <td width="13%" ></td>
+				    <!-- <td width="10%"></td> -->
+				</tr>	
+			</thead>
+			<tbody>
+				<tr ng-repeat='jurnalHeader in jurnalHeaders | orderBy:orderJurnalHeader ' >
+					<td>{{jurnalHeader.id}}</td>
+					<td>{{jurnalHeader.jenisVoucher}}</td>							    
+					<td>{{jurnalHeader.noUrut}}</td>				
+				    <td>{{jurnalHeader.issueDate | date:'dd-MMM-yyyy'}}</td> 
+				    <td>{{jurnalHeader.bookingDate | date:'dd-MMM-yyyy'}}</td> 
+				    <td>{{jurnalHeader.noVoucher}}</td>					
+				    <td>{{jurnalHeader.statusVoucher}}</td>
+				    <td>{{jurnalHeader.user.nama}}</td> 		    				    
+				    <td><button 
+				    		type='button' 
+				    		class='btn btn-warning btn-block btn-sm'
+				 			ng-click='prosesBookingDate(jurnalHeader.id, $index)'
+				    	>Proses Book date</button></td>		    
+				</tr>		
+			</tbody>
+		</table>
+
+		<div class="container">
+        <pagination total-items="totalItems" items-per-page="itemsPerPage" 
+         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></pagination>
+    	</div>
+
+	</div>	
+<!-- !tutupGrid -->
+	<div uib-collapse="tutupGrid" ng-class='classForm' class='container-fluid' style='color:navy'  >
+	<div>				
+		<div class='container-fluid' style=" background-color:#ffdddd; "  >
+		<br>
+			<table border="0" style="width:100%; " >
+				<thead >
+					<tr width='15%'></tr>	
+					<tr width='15%'></tr>	
+					<tr width='15%'></tr>	
+					<tr width='15%'></tr>	
+					<tr width='15%'></tr>	
+					<tr width='25%'></tr>					
+				</thead>			
+				<tbody>
+					<tr >
+						<td >No Urut</td>					
+						<td style="color:green">
+							<strong>[ {{isiJurnalHeader.noUrut}} ]</strong>
+						</td>
+						<td  >Issue Date </td>					
+						<td style="color:green" >
+							<strong>[ {{isiJurnalHeader.issueDate | date:'dd-MMM-yyyy'}} ]</strong>
+						</td>
+						<td >Jenis Voucher</td>					
+						<td style="color:green">
+							<strong>[ {{isiJurnalHeader.jenisVoucher}} ]</strong>
+						</td>
+					</tr>								
+					<tr>
+						<td >No Voucher</td>					
+						<td style="color:green" >{{isiJurnalHeader.noVoucher}}</td>
+						<td >Booking Date</td>					
+						<td style="color:green" >
+							<form class="form-inline">	
+							<p class="input-group">
+								<input 	type="text" 						
+										uib-datepicker-popup="dd-MMM-yyyy" 
+										ng-model="isiJurnalHeader.bookingDate" 
+										is-open="opened3" 
+										datepicker-options="dateOptions" 
+										id='tgl3'
+										close-text="Tutup" 		
+										style='width:95%'			
+										alt-input-formats="dd-MMM-yyyy" 
+										ng-required="true"
+										/> 
+										<!-- {{isiJurnalHeader.bookingDate}} -->
+										<!--date-disabled="disabled(date, mode)"  // ng-readonly="true" -->
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-info " ng-click="open3($event)"><i class="glyphicon glyphicon-calendar"></i>
+											</button>
+										</span>
+							</p>
+							</form>
+						</td>
+						<td >Dibayar kepada</td>					
+						<td style="color:green" >{{isiJurnalHeader.diBayar}}</td>
+					</tr>				 				 
+				</tbody>
+			</table>	
+			<br>	
+			<!-- <hr> -->
+			<!-- DETIL JURNAL F6CECE-->
+			<div style="height:330px; background-color:#ffa64e"  class='container-fluid'  >
+				<br>
+				<table  class="table table-bordered table-striped table-condensed table-hover" border="2px" style="background-color:white" >
+					<thead>
+						<tr>	
+							<td width="3%" >D/K</button></td>			    
+							<td width="5%" align="center">Kode</button></td>
+							<td width="18%" >Nama</button></td>			    
+						    <td width="5%" align="center">bagian</button></td> 		
+						    <td width="20%">Keterangan</button></td>
+						    <td width="10%">Jumlah</button></td> 
+						    <td width="5%">kas/bank</button></td>
+						    <td width="7%" align="center">Rel</button></td>	
+						    <td width="8%" align="center">Cust</button></td>
+						</tr>	
+					</thead>
+					<tbody>
+						<tr ng-repeat='JurnalDetil in jurnalDetils' >					
+							<td  style="color:red"><div ng-if="JurnalDetil.debet==0">K</div><div ng-if="JurnalDetil.debet!=0">D</div>	</td>
+							<td style="color:red">{{JurnalDetil.accountDetil.kodePerkiraan}}</td>
+							<td style="color:red">{{JurnalDetil.accountDetil.namaPerkiraan}}</td>							    
+							<td style="color:red">{{JurnalDetil.bagian.nama}}-{{JurnalDetil.bagian.kode}}</td>		
+						    <td style="color:red">{{JurnalDetil.keterangan}}</td> 
+						    <td style="color:red">{{JurnalDetil.debet + JurnalDetil.kredit | currency:""  }}</td>	
+						    <td style="color:red">{{JurnalDetil.bank.kode}}</td>
+						    <td style="color:red">{{JurnalDetil.rel}}</td>		   
+						    <td style="color:red">{{JurnalDetil.customer.kode}}</td> 
+						</tr>		
+					</tbody>
+				</table>	
+			</div>
+			<div class="container-fluid" style="background-color:DarkCyan">
+				<table border="0" style="width:100%; ">
+					<thead>
+						<tr>														
+							<td width="40%" ></button></td>			    
+						    <td width="15%" ></button></td> 			    		    
+						    <td width="15%"></button></td>			    			    
+						    <td width="15%" ></button></td> 			    		    
+						    <td width="15%"></button></td>			    			    
+						</tr>	
+					</thead>
+					<tbody>
+						<tr >
+							<td>
+								<pagination total-items="totalItems2" items-per-page="itemsPerPage2" 
+			         	ng-model="currentPage2" ng-change="pageChanged2()" max-size="10" boundary-links="true" rotate="false"></pagination>	    				
+							</td>
+							<td>
+								<button 
+									type='button' 
+									class='btn btn-info btn-block btn-sm' 
+									ng-click='tutupGrid=!tutupGrid'>Close 
+									<span class='glyphicon glyphicon-remove'></span>
+								</button>
+							</td>
+							<td>
+								<button 
+									type='button' 
+									class='btn btn-danger btn-block btn-sm' 
+									ng-click='updateData()'>Proses 
+									<span class='glyphicon glyphicon-ok'></span>
+								</button>
+							</td>
+							<td style="color:white" align='right'>
+								<span >Debet :{{totalDebet | currency:""}}</span>
+							</td>			
+							<td style="color:white" align='right'>
+								Kredit :<span >{{totalKredit | currency:""}}</span>
+							</td>			
+						</tr>				
+					</tbody>
+					
+				</table>
+			</div>
+			<!-- END DETIL JURNAL -->
+			<br>
+		</div>			
+		
+	</div>
+
+  </div>
+</div>

@@ -1,0 +1,372 @@
+<div growl></div> 
+<ul class="nav nav-tabs">
+  <li role="presentation" ><a href="#/transaksiJurnalHeader">Daftar Jurnal</a></li>
+  <li role="presentation"class="active" ><a href="#/transaksiJurnalDetil/new"> Jurnal Detil</a></li>  
+</ul>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h2 class="modal-title" style="color:SteelBlue">Konfirmasi !</h2>
+    </div>
+    <div class="modal-body" style="background-color:red; ">
+        <p ><h4 style="color:white">Anda  akan menghapus [ {{kode}} ] ??? </h4></p>
+    </div>
+    <div class="modal-footer">
+		<button class="btn btn-danger btn-block" ng-click="ok()">OK</button>
+		<button class="btn btn-warning btn-block" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<div class='container-fluid' style="background-color:white" >	
+	<br>
+		<div  class='container-fluid'  >		
+			<button class="btn btn-primary " ng-disabled="kondisiView  " style="width:125px" ng-click='transaksiBaru()'>Transaksi Baru</button>
+			<button class="btn btn-warning " ng-disabled="kondisiView  " style="width:125px" ng-click='saveVoucher()'>Simpan</button>
+<!-- 			<button class="btn btn-success " ng-disabled="!kondisiView  " style="width:125px" ng-click='approvedVoucher()'>Approve</button> -->
+			<button class="btn btn-info " 
+					style="width:125px" 
+					ng-click='openDetil()' 
+					ng-disabled="kondisiView  ">Open Detil</button>
+			<div class="btn-group" uib-dropdown is-open="status.isopen" >
+				<button 
+					id="single-button" 
+					type="button" 
+					class="btn btn-danger" 
+					uib-dropdown-toggle 
+					ng-disabled="disabled" 
+					style="width:125px">Utility <span class="caret"></span></button>
+				<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+					<!-- <li role="menuitem"><a ng-click="pesan()" href="" ng-disabled="!kondisiView  "></a></li> -->
+					<li role="menuitem"><a href="" ng-click="printJurnal()">Cetak</a></li>
+					<li role="menuitem"><a href="" ng-click="pesan()">Jurnal Balik <span class="badge">{{statusJurnalBalik}}</span></a></li>
+					<li class="divider"></li>
+					<li role="menuitem"><a href="">Batal Approve </a></li>
+				</ul>
+			</div>
+			<button class="btn" ng-click='alert($scope.StatusData)'>Status - [{{StatusData}}]</button>
+		</div>	
+	<br>
+	<div class='container-fluid'  ng-class="classWarnaJenisJurnal" >
+		<br>
+			<table border="0" width="100%" >	
+				<tbody>
+					<tr>
+						<td width="25%" style="color:white" align="left" >No Urut / Id</td>	
+						<td width="5%"  align="center" style="color:white">:</td>	
+						<td width="35%" style="color:white">		
+							<p class="form-control-static" >{{jurnalHeader.noUrut}} / {{jurnalHeader.id}}</p> 
+						</td>
+						<td width="25%" style="color:white">Issue Date</td>
+						<td width="5%" style="color:white" align="center">:</td>	
+						<td >
+							<div >
+							<table>
+								<tr>
+									<td>
+  									<input 	
+  										type="text"        
+  										uib-datepicker-popup="dd-MMM-yyyy" 
+  										ng-model="jurnalHeader.issueDate " 
+  										is-open="popup1.opened" 
+  										datepicker-options="dateOptions" 
+  										ng-required="true" 
+  										close-text="Tutup" 
+  										alt-input-formats="dd-MMM-yyyy" 
+  										style='width:95%'          		
+  									>
+          							</td>
+									<td>
+	    								<button 	
+	    									type="button" 
+	    									class="btn  btn-danger btn-sm" 
+	    									ng-click="open()"
+	    									ng-disabled="kondisiView">
+	    									<i class="glyphicon glyphicon-calendar"></i>
+	    								</button>          									
+									</td>
+								</tr>
+							</table>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="color:white" >No Voucher</td>	
+						<td align="center" style="color:white">:</td>				
+						<td >
+							<p class="form-control-static" style="color:white" >{{jurnalHeader.noVoucher}}</p>		
+						</td>								
+						<td style="color:white">Jenis Voucher</td>
+						<td align="center" style="color:white">:</td>
+						<td >
+							<select ng-model="jurnalHeader.jenisVoucher" 
+									ng-options="jenisVoucher as jenisVoucher for jenisVoucher in jenisVouchers" 
+									id='comboJenis' 
+									ng-change="cekJenisVoucher()"
+									ng-disabled="kondisiView || headerAda" 
+									></select>
+									<!-- {{jurnalHeader}} -->
+						</td>
+					</tr>								
+					<tr >				
+						<td style="color:white">Booking Date</td>		
+						<td align="center" style="color:white">:</td>
+						<td style="color:white">
+							<p class="form-control-static">
+								{{jurnalHeader.bookingDate | date:'dd MMMM yyyy'}}
+							</p>	
+						</td>
+						<td style="color:white">Dibayar kepada</td>	
+						<td align="center" style="color:white">:</td>
+						<td >
+							<input 	
+								type='text' 
+								id='idDibayarKe' 
+								ng-model='jurnalHeader.diBayar' 
+								size='45%' 
+								ng-disabled="disableDibayarKe"   /> 
+						</td>
+					</tr>				 				 
+				</tbody>
+			</table>		
+		<!-- <hr> -->
+		<br>
+	</div>
+
+
+
+	<!-- START isi detil -->
+	<!-- 1000px -->
+	<div ng-class='classForm' class='container-fluid' style='background-color:whitesmoke' uib-collapse="SimpanIsiDetil" >	
+		<br>			
+			<form class="form-horizontal" style="color:navy">	
+			    <div class="form-group form-group-sm">
+			        <label for="cmbDK" class="col-sm-2 control-label"  align="left">D/K</label>
+			        <div class="col-sm-2">
+			        	<select ng-model="jurnalDetil.dk" 
+								ng-options="dk as dk for dk in dks" 
+								id='cmbDK'
+								ng-disabled="kondisiView" 
+								class="form-control input-sm"></select> 
+			        </div>
+			    </div>
+
+			    <div class="form-group form-group-sm">
+			        <label for="kodeCoa" class="col-sm-2 control-label"  align="left">Kode C O A</label>
+			        <div class="col-sm-8">
+			        	<input type='text' 
+								ng-model='jurnalDetil.accountDetil' 
+								size="15" 
+								maxlength="15" 
+								typeahead-on-select
+								uib-typeahead="coaDetil as coaDetil.kodePerkiraan +', ' +coaDetil.namaPerkiraan for coaDetil in getCoaDtlByKode($viewValue) " 
+								placeholder="isi kode COA" 
+								typeahead-select-on-blur="true"
+								ng-blur="myFunct($event)"
+								ng-disabled="kondisiView"
+								id="kodeCoa"
+								class="form-control input-sm"
+								/>  
+			        </div>
+			        {{jurnalDetil.accountDetil}}
+			    </div>
+
+			    <div class="form-group form-group-sm">
+			        <label for="idBagian" class="col-sm-2 control-label"  align="left">Bagian</label>
+			        <div class="col-sm-5">
+						<input 	
+							type='text'  
+							ng-model='jurnalDetil.bagian'  
+							size="15" 
+							maxlength="10" 
+							uib-typeahead="bagian as bagian.nama+', '+bagian.kode for bagian in bagians | filter:$viewValue | limitTo:8" 
+							placeholder="isi kode Bagian" 
+							ng-disabled="kondisiView " 
+							id="kodeBagian" 
+							class="form-control input-sm"/>
+			        </div>
+			    </div>
+			    <div class="form-group form-group-sm">
+			        <label for="txtKeterangan" class="col-sm-2 control-label"  align="left">Keterangan</label>
+			        <div class="col-sm-9">
+						<input 	type='text'  
+								ng-model='jurnalDetil.keterangan' 
+								id="txtKeterangan" 
+								size="80" 
+								maxlength="100" 
+								ng-disabled="kondisiView" 
+								ng-keyup="cekLastDesc($event)" 
+								placeholder="Isi keterangan" 
+								class="form-control input-sm" 
+								uib-popover="Isi '=' untuk keterangan sama dg sebelumnya " 
+								popover-trigger="mouseenter" 
+								popover-placement="bottom"
+								/>						
+			        </div>
+			    </div>
+			    <div class="form-group form-group-sm">
+			        <label for="txtJumlah" class="col-sm-2 control-label"  align="left">Jumlah</label>
+			        <div class="col-sm-3">			        	
+						<input 	type='text' 
+								min="0"  
+								ng-model='jurnalDetil.jumlah' 
+								id="txtJumlah" 
+								size="8" 
+								maxlength="15" 
+								ng-disabled="kondisiView"  
+								ng-keyup="cekLastJumlah($event)" 
+								ng-keypress="jgnSimpan()"
+								placeholder=" [Rp] " 
+								class="form-control input-sm"
+								uib-popover="Isi '0' untuk Jumlah sama dg sebelumnya" 
+								popover-trigger="mouseenter" 
+								popover-placement="bottom"
+								/>						
+			        </div>
+					<div class="col-sm-3">			        	
+			        	<label class="col-sm-2 control-label"  align="left" style="color:green">{{jurnalDetil.jumlah | number}}</label>
+			        </div>
+			    </div>
+			    <div class="form-group form-group-sm">
+			        <label for="kodeBank" class="col-sm-2 control-label"  align="left">Bank</label>
+			        <div class="col-sm-5">
+						<input 	type='text'  
+								ng-model='jurnalDetil.bank'  
+								size="25" 
+								maxlength="10" 
+								uib-typeahead="bank as bank.kode for bank in banks | filter:$viewValue | limitTo:8" 
+								placeholder="isi kode Bank" 
+								ng-disabled="kondisiView || !enableBank" 
+								id="kodeBank" 
+								class="form-control input-sm"/>
+			        </div>{{jurnalDetil.bank}}
+			    </div>
+			    <div class="form-group form-group-sm">
+			        <label for="enRel" class="col-sm-2 control-label"  align="left">Rel</label>
+			        <div class="col-sm-5">
+						<input type='text'  
+								ng-model='jurnalDetil.rel'  
+								size="20" 
+								maxlength="10" 
+								ng-disabled="kondisiView || !enableRel"
+								id="enRel"
+								placeholder="Isi Rel"
+								class="form-control input-sm"/>
+			    
+			        </div>
+			    </div>
+			    <div class="form-group form-group-sm">
+			        <label for="cust" class="col-sm-2 control-label"  align="left">Customer</label>
+			        <div class="col-sm-8">
+						<input 	type='text'  
+								ng-model="jurnalDetil.customer"
+                                uib-typeahead ="customer as customer.kode + ', ' + customer.nama  for customer in 	getCustomer($viewValue) "
+                                size="50" 
+                                maxlength="15" 
+                                ng-disabled="kondisiView || !enableCust"
+                                id="cust"
+                                uib-popover="Isi '=' untuk Customer sama dg sebelumnya "
+                                placeholder="Isi Customer"
+                                class="form-control input-sm"/>
+			    
+			        </div>
+			    </div>
+			    <div class="form-group form-group-sm">
+			        <label  class="col-sm-2 control-label"  align="left"></label>
+			        <div class="col-sm-5">
+						<button class="btn btn-primary" 
+								ng-click='tambahDetil()' 
+								ng-disabled="kondisiView">Next row</button>
+			        	<button class="btn btn-danger" 
+								ng-click='tambahDetilNEW()' 
+								ng-disabled="kondisiView">Clear</button>
+						<button class="btn btn-success" 
+								ng-click='SimpanIsiDetil=!SimpanIsiDetil' 
+								ng-disabled="kondisiView">Close</button>
+			        </div>
+			    </div>
+		    </form>
+		<br>
+	</div>
+	<!-- END isi detil -->
+	
+	<div style="height:280px; background-color:#D6EBFF; overflow-y: auto;"  class='container-fluid'  >
+		<table  class="table table-bordered table-striped table-condensed table-hover" border="2px" style="background-color:white" >
+			<thead>
+				<tr>													
+					<td width="3%"  >D/K</td>			    
+					<td width="5%"  align="center">Kode</td>
+					<td width="13%" >Nama</td>			    
+				    <td width="5%"  align="center">bagian</td> 			 
+				    <td width="20%" >Keterangan</td>			    
+				    <td width="10%" >Jumlah</td> 
+				    <td width="5%"  >kas/bank</td>			    
+				    <td width="5%"  align="center">Rel</td>			    
+				    <td width="15%" align="center">Cust</td>			    
+				    <td width="5%"  align="center">DEL</td>
+				    <td width="5%"  align="center">Edit</td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr ng-repeat='JurnalDetil in jurnalDetils' >	
+					<td><div ng-if="JurnalDetil.debet==0" >K</div>
+						<div ng-if="JurnalDetil.debet!=0">D</div>
+					</td>
+					<td>{{JurnalDetil.accountDetil.kodePerkiraan}}</td>
+					<td>
+						{{JurnalDetil.accountDetil.namaPerkiraan}}
+					</td>			    
+					<td>{{JurnalDetil.bagian.kode}}</td>				
+				    <td>{{JurnalDetil.keterangan}}</td> 
+				    <td>{{JurnalDetil.debet + JurnalDetil.kredit | number  }}</td>	<td>{{JurnalDetil.bank.kode}}</td>					
+				    <td>{{JurnalDetil.rel}}</td>		
+				    <td>{{JurnalDetil.customer.kode}}</td> 		   
+				    <td><button type='button' class='btn btn-danger btn-block btn-xm'
+				    	ng-click='hapusDetil(JurnalDetil.id, JurnalDetil.accountDetil.namaPerkiraan)' ng-disabled="kondisiView"
+				    	>Del</button>
+				    </td>		 
+				    <td><button type='button' class='btn btn-warning btn-block btn-xm'
+	ng-click='editDetil(JurnalDetil.id)' ng-disabled="kondisiView"
+				    	>Edit</button>
+				    </td>		 
+				</tr>		
+			</tbody>
+		</table>	
+	</div>
+
+	<div class="container-fluid" style="background-color:DarkCyan">
+		<table border="0" style="width:100%; ">
+			<thead>
+				<tr>														
+					<td width="50%" ></td>			    
+				    <td width="25%" ></td> 			    			    
+				    <td width="25%"><</td>			    				    
+				</tr>	
+			</thead>
+			<tbody>
+				<tr >
+					<td>
+						<uib-pagination total-items="totalItems" items-per-page="itemsPerPage" 
+	         	ng-model="currentPage" ng-change="pageChanged()" max-size="10" boundary-links="true" rotate="false"></uib-pagination>	    				
+					</td>
+					<td style="color:white">
+						<br>
+						<p>
+						Total Debet : Rp <span >{{totalDebet | currency:""}}</span>
+						</p>
+					</td>			
+					<td style="color:white">
+						<br>
+						<p>
+						Total Kredit : Rp <span>{{totalKredit | currency:""}}</span>
+						</p>
+					</td>			
+				</tr>				
+			</tbody>
+			
+		</table>
+	</div>	
+</div>
+
+
+

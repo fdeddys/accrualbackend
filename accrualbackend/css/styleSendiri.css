@@ -23,7 +23,8 @@ body {
 }
 */
 td {
-   color : blue;
+  color : blue;
+  vertical-align: middle;
 }
 
 .formTambah {
@@ -36,6 +37,18 @@ td {
 
 .formHapus {
 	background-color:#E06666;			
+}
+
+.classPENERIMAAN {
+  background-color:#336699;
+}
+
+.classPENGELUARAN {
+  background-color:#b94646;
+}
+
+.classPEMINDAHAN {
+  background-color:#336600;
 }
 
 hr { 
@@ -97,3 +110,17 @@ hr {
 .view-animate.ng-leave.ng-leave-active {
   left:-100%;
 }
+
+.tulisanHijau {
+  color: LimeGreen ;
+}
+
+.tulisanBiru {
+  color: MidnightBlue ;
+}
+
+.tulisanMerah {
+  color: LightCoral ;
+}
+
+
